@@ -1,0 +1,91 @@
+
+  <!DOCTYPE html>
+<html>
+<head>
+  <title>Profile Create Page</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+  </style>
+   <script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js"></script>
+   <script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-analytics.js"></script>  
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> 
+</head>
+
+
+<!--Add Bootstrap content here and in the CSS file-->
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" style = "font-family: Arial, sans-serif; font-style: italic;" href="#">LOOP</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">My Feed</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Upload a Project</a>
+        </li>
+        <li class="nav-item dropdown" class = "nav-item active">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Profile
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <a class="dropdown-item" href="#">Profile </a>
+            <a class="dropdown-item" href="#">Logout </a>
+            <a class="dropdown-item" href="#">Switch Account</a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <h1></h1>
+  <h2></h2>
+  <header>
+    <h1>Welcome Back! </h1><h2>Example Code</h2>
+  </header>
+
+  <div>
+    <div class ="Input_group">
+      <label for="basic-url" class="form-label">Enter your Username:</label>
+     <div class="input-group mb-3">
+      <span class="input-group-text">@</span>
+      <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+    </div>
+                
+    <label for="basic-url" class="form-label">Enter your Email:</label>
+    <div class="input-group mb-3">
+      <input type="text" class="form-control" placeholder="Email" aria-label="Email" aria-describedby="basic-addon2">
+      <span class="input-group-text" id="basic-addon2">@example.com</span>
+    </div>
+                    
+    <label for="basic-url" class="form-label">Enter your GitHub:</label>
+    <div class="input-group mb-3">
+      <input type="text" class="form-control" placeholder="URL" aria-label="URL" aria-describedby="basic-addon2">
+      <span class="input-group-text" id="basic-addon2">@example.com</span>
+    </div>
+                
+    <label for="basic-url" class="form-label">What would you like to go by on LOOP?</label>
+    <div class="input-group mb-3">
+      <input type="text" class="form-control" placeholder="First Name" aria-label="First Name" aria-describedby="basic-addon1">
+    </div>
+                
+    <div class="input-group mb-3">
+      <input type="text" class="form-control" placeholder="Last Name" aria-label="Last Name" aria-describedby="basic-addon1">
+    </div>
+                    
+    <label for="basic-url" class="form-label">Write a Breif "About Me" to introduce yourself to Collaborators:</label>
+    <div class="input-group">
+      <textarea class="form-control" placeholder="About Me" aria-label="About Me"></textarea>
+    </div>
+    </div>
+               
+    <div class="d-flex justify-content-center">
+      <button type="button" class="btn btn-light" style="background-color: blueviolet; color: white; margin-bottom: 20px;">Submit</button>
+    </div>
+</div>
+</body>
