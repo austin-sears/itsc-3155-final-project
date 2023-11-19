@@ -80,5 +80,45 @@
     height: auto;
   }
 
+  .comment-container {
+    width: 70%;
+    margin: 20px auto;
+  }
+  .comment {
+    margin-bottom: 10px;
+    border: 1px solid blueviolet;
+    padding: 10px;
+  }
+  .comment p {
+    margin: 0;
+  }
+  .comment-form {
+    width: 70%;
+    margin: 20px auto;
+  }
+  .comment-form h4 {
+    margin-bottom: 10px;
+  }
+  .comment-form input, .comment-form textarea {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 5px;
+  }
+  .comment-form button {
+    padding: 10px;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+  }
+  .comment-form button:hover {
+    background-color: #3E8E41;
+  }
+  .comment-form input:focus, .comment-form textarea:focus {
+    outline: none;
+    border: 2px solid #4CAF50;
+  }
+
 
 

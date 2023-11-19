@@ -59,7 +59,32 @@
         Description:
         This HTML code represents a card component, often used in web development to display content in a structured manner.
       </p>
-      <a href="#" class="btn btn-light" style="background-color: red; color: white;">Remove</a> 
+
+      <div class="comment-section">
+        <h3>Comments</h3>
+        <div class="comment-container">
+          <div class="comment">
+            <p><strong>@John_Smith:</strong> This is a great article!</p>
+          </div>
+          <div class="comment">
+            <p><strong>@Jane_Doe:</strong> I have a different opinion.</p>
+          </div>
+          <div class="comment">
+            <p><strong>@Mark_Johnson:</strong> Can you provide more information?</p>
+          </div>
+        </div>
+        <form class="comment-form">
+          <h4>Leave a comment</h4>
+          <userName style="font-family: 'Courier New', Courier, monospace;">
+            @Username_Example
+          </userName>
+          <textarea name="comment" placeholder="Write your comment here" required></textarea>
+          <a href="#" class="btn btn-light" style="background-color: blueviolet; color: white;">Comment</a> 
+        </div>
+        </form>
+      </div>
+
+      <a href="#" class="btn btn-light" style="background-color: red; color: white; margin: 20px;">Remove Post</a> 
   </div>
 
   <script type="module">
