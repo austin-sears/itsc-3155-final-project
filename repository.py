@@ -39,13 +39,23 @@ def get_one_post(post_id):
 
 #TODO
 #Create a function that gets all comments from database
-def get_comments()
+def get_comments(post_id)
+    comments = []
+    comment_ref = db.collection('Comments').where('post_id', '==', post_id)
+    docs = comment_ref.get()
+    for doc in docs:
+        comment_data = doc.to_dict()
+        comments.append(comment_data)
+    return comments
 
 
 #TODO
 #Create a function that adds a comment to a given post
-def add_comment()
-
+def add_comment(post_id, commenter_username, comment_text)
+    new_comment_ref = db.collection('Comments').document()
+    new_comment_data = {'post_id': post_id,'commenter_username': commenter_username, 'comment_text': comment_text}
+    new_comment_ref.set new_comment_ref.id
+    return new_comment_id
 
 
 def create_post(Name, Link, Description, CreatedBy, Code):

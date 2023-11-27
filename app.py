@@ -3,6 +3,42 @@ from repository import *
 
 app = Flask(__name__)
 
+#
+#USE ALL THE FUNCTIONS FROM THIS PAGE DO NOT USE REPOSITYORY.PY PAGE 
+#
+#
+#TODO - Matt
+#add abort errors for each function
+# if username = '' or prefname = '' .....
+# abort(400)
+#^^^ This is an example for you
+#
+#
+#
+#TODO - FRONT END TEAM - only add in html files
+#add names for each of the imputs, you can see how I did this in the username input on the Profile_Create page (the part where it says name ="new_username")
+#you can reference create_acct and new_post to see what the names are
+#
+#TODO - FRONT END TEAM CONT
+#make sure the names are the same as what is in single quotes 
+#create an html file for account page other than home
+#either create or upload the feed.html file to the project
+#need an html file for a single post page (single_post.html)
+#I changed Def post to def home post will now be the post page
+#
+#TODO - FRONT END TEAM CONT AGAIN (OR MATT)
+#When referencing the data to display you will need to use the variables I used 
+#for single_post.html (refer to line 84-103) use post and do post.name, post.whatever you need
+#You will need to do this with all information, refer to this file and then hook up the correct variablees
+#
+#RENDER TEMPLATES-----------------------------------------------
+#
+
+#TODO REESE - For render templates and html
+#need to make a file in html for account page other than home (account.html)
+#need to make an app.route for account page (account)
+#need to make an app.route upload or create post page 
+#need to make an app.route for a single post page
 @app.route('/')
 def index():
     return render_template('login.html')
@@ -26,6 +62,11 @@ def feed():
 @app.route('/Post')
 def post():
     return render_template('single_post.html')
+
+@app.route('get_comment')
+
+
+@app.route('add_comment')
 
 #
 #FUNCTIONS----------------------------------------------------
@@ -103,12 +144,10 @@ def del_acct(acct_id):
     except Exception as e:
         abort(500, f"Internal Server Error: {str(e)}")
 
+@app.route('/get_comment')
 
-#TODO 
-#Make an @app.route to obtain all of the comments for a given post 
 
-#TODO
-#Make an @app.post to post a single comment
+@app.route('/add_comment')
 
 
 #Placeholder FOR REESE 
