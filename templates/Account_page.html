@@ -1,3 +1,64 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block nav %}
+    <a class="nav-link" href="#feed">My Feed </a>
+    <a class="nav-link" href="{{ url_for('upload') }}">Upload a Project </a>
+    <a class="nav-link" href="#profile">My Profile</a>
+{% endblock %}
+
+{% block body %}
+
+  <div class="divider">
+    <h1 style="color:white">John D.</h1>
+    <h1 style="color:white">@Username_Example</h1>
+  </div>
+
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item"><b>Username:</b> @Username_Example</li>
+    <li class="list-group-item"><b>Name:</b> John D.</li>
+    <li class="list-group-item"><b>Email:</b> Example@gmail.com</li>
+    <li class="list-group-item"><b>Github Link:</b> www.githublink.com</li>
+    <li class="list-group-item"><b>About Me:</b> Write a Breif "About Me" to introduce yourself to Collaborators Write a Breif "About Me" to introduce yourself to Collaborators Write a Breif "About Me" to introduce yourself to Collaborators Write a Breif "About Me" to introduce yourself to Collaborators Write a Breif "About Me" to introduce yourself to Collaborators</li>
+  </ul>
+
+  <p style="font-size: 40px; margin: 20px;">
+    @Username_Example's Posts:
+  </p>
+
+  <template class="card">
+    <img src="images\Screenshot 2023-11-12 173816.jpg" class="card-img-top" alt="...">
+    <div class="card-body">
+        
+      <h5 class="card-title">Example Code <span class="badge bg-secondary">HTML</span> <span class="badge bg-secondary" style="background-color: blueviolet;">CSS</span></h5>
+      <userName style="font-family: 'Courier New', Courier, monospace;">
+        @Username_Example
+      </userName>
+      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+      <a href="#" class="btn btn-light" style="background-color: blueviolet; color: white;">See full Post</a>
+    </div>
+  </template>
+
+  <div class="card">
+    <img src="images\Screenshot 2023-11-12 173816.jpg" class="card-img-top" alt="...">
+    <div class="card-body">
+        
+      <h5 class="card-title">Example Code <span class="badge bg-secondary">HTML</span> <span class="badge bg-secondary" style="background-color: blueviolet;">CSS</span></h5>
+      <userName style="font-family: 'Courier New', Courier, monospace;">
+        @Username_Example
+      </userName>
+      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+      <a href="#" class="btn btn-light" style="background-color: blueviolet; color: white;">See full Post</a> 
+      <a href="#" class="btn btn-light" style="background-color: red; color: white;">Remove</a> 
+    </div>
+  </div>
+{% endblock %}
+
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -44,48 +105,7 @@
   </nav>
   <h1></h1>
   <h2></h2>
-  <header>
-    <h1>John D. </h1><h2>@Username_Example</h2> 
-  </header>
-
-  <ul class="list-group list-group-flush">
-    <li class="list-group-item"><b>Username:</b> @Username_Example</li>
-    <li class="list-group-item"><b>Name:</b> John D.</li>
-    <li class="list-group-item"><b>Email:</b> Example@gmail.com</li>
-    <li class="list-group-item"><b>Github Link:</b> www.githublink.com</li>
-    <li class="list-group-item"><b>About Me:</b> Write a Breif "About Me" to introduce yourself to Collaborators Write a Breif "About Me" to introduce yourself to Collaborators Write a Breif "About Me" to introduce yourself to Collaborators Write a Breif "About Me" to introduce yourself to Collaborators Write a Breif "About Me" to introduce yourself to Collaborators</li>
-  </ul>
-
-  <p style="font-size: 40px; margin: 20px;">
-    @Username_Example's Posts:
-  </p>
-
-  <template class="card">
-    <img src="images\Screenshot 2023-11-12 173816.jpg" class="card-img-top" alt="...">
-    <div class="card-body">
-        
-      <h5 class="card-title">Example Code <span class="badge bg-secondary">HTML</span> <span class="badge bg-secondary" style="background-color: blueviolet;">CSS</span></h5>
-      <userName style="font-family: 'Courier New', Courier, monospace;">
-        @Username_Example
-      </userName>
-      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-      <a href="#" class="btn btn-light" style="background-color: blueviolet; color: white;">See full Post</a>
-    </div>
-  </template>
-
-  <div class="card">
-    <img src="images\Screenshot 2023-11-12 173816.jpg" class="card-img-top" alt="...">
-    <div class="card-body">
-        
-      <h5 class="card-title">Example Code <span class="badge bg-secondary">HTML</span> <span class="badge bg-secondary" style="background-color: blueviolet;">CSS</span></h5>
-      <userName style="font-family: 'Courier New', Courier, monospace;">
-        @Username_Example
-      </userName>
-      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-      <a href="#" class="btn btn-light" style="background-color: blueviolet; color: white;">See full Post</a> 
-      <a href="#" class="btn btn-light" style="background-color: red; color: white;">Remove</a> 
-    </div>
-  </div>
+  
 
   <script type="module">
 

@@ -1,73 +1,38 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Profile Create Page</title>
-  <link rel="stylesheet" href="styles.css">
-  <style>
-  </style>
-   <script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js"></script>
-   <script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-analytics.js"></script>  
-   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> 
-</head>
+{% extends 'base.html' %}
 
+{% block head %}
 
-<!--Add Bootstrap content here and in the CSS file-->
-<body>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" style = "font-family: Arial, sans-serif; font-style: italic;" href="#">LOOP</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNavDropdown">
-      <ul class="navbar-nav">
-        <li class="nav-item active">
-          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">My Feed</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Upload a Project</a>
-        </li>
-        <li class="nav-item dropdown" class = "nav-item active">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Profile
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <a class="dropdown-item" href="#">Profile </a>
-            <a class="dropdown-item" href="#">Logout </a>
-            <a class="dropdown-item" href="#">Switch Account</a>
-          </div>
-        </li>
-      </ul>
-    </div>
-  </nav>
-  <h1></h1>
-  <h2></h2>
-  <header>
-    <h1>Welcome Back! </h1><h2>LOOP Feed:</h2>
-  </header>
+{% endblock %}
 
-  <!-- Note: this is hard codded. solution: https://gomakethings.com/html-templates-with-vanilla-javascript/ 
-    You will need to gather the data from the JS and use the template below to display the data for each card needed.-->
+{% block nav %}
+    <a class="nav-link active" aria-current="page"  href="/feed">My Feed </a>
+    <a class="nav-link" href="{{ url_for('upload') }}">Upload a Project </a>
+    <a class="nav-link" href="#profile">My Profile</a>
+{% endblock %}
+
+{% block body %}
+<div>
+    <div class="divider">
+    <h1 style="color:white">Your Feed</h1>
+    <h1 style="color:white">Stay in the LOOP</h1>
+  </div>
   <template class="card">
-    <img src="images\Screenshot 2023-11-12 173816.jpg" class="card-img-top" alt="...">
     <div class="card-body">
-        
       <h5 class="card-title">Example Code <span class="badge bg-secondary">HTML</span> <span class="badge bg-secondary" style="background-color: blueviolet;">CSS</span></h5>
       <userName style="font-family: 'Courier New', Courier, monospace;">
-        @Username_Example
+        @Username_Example <!--Remember This needs to be the Username and needs to point back to that user's account when clicked!-->
       </userName>
       <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
       <a href="#" class="btn btn-light" style="background-color: blueviolet; color: white;">See full Post</a>
     </div>
   </template>
 
-  <div class="card">
-    <img src="images\Screenshot 2023-11-12 173816.jpg" class="card-img-top" alt="...">
+  <div class="card" style="margin: 20px">
     <div class="card-body">
-        
-      <h5 class="card-title">Example Code <span class="badge bg-secondary">HTML</span> <span class="badge bg-secondary" style="background-color: blueviolet;">CSS</span></h5>
+      <Content class="card-body"style="font-size: 25px; font-family: 'Consolas', monospace;">
+        This is some text within a card body.
+      </Content>
+      <h5 class="card-title">Example Project Name <span class="badge bg-secondary">HTML</span> <span class="badge bg-secondary" style="background-color: blueviolet;">CSS</span></h5>
       <userName style="font-family: 'Courier New', Courier, monospace;">
         @Username_Example
       </userName>
@@ -76,6 +41,9 @@
       <a href="#" class="btn btn-light" style="background-color: red; color: white;">Remove</a> 
     </div>
   </div>
+</div>
+
+{% endblock %}
 
   <script type="module">
 

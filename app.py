@@ -1,4 +1,5 @@
-from flask import Flask, render_template, url_for
+# version 4
+from flask import Flask, render_template, url_for, request, redirect
 from repository import *
 
 app = Flask(__name__)
@@ -63,17 +64,17 @@ def feed():
 def post():
     return render_template('single_post.html')
 
-@app.route('get_comment')
+@app.route('/get_comment')
 
 
-@app.route('add_comment')
+@app.route('/add_comment')
 
 #
 #FUNCTIONS----------------------------------------------------
 #
 
 #Creates post
-@app.post('/create_acct')
+@app.route('/create_acct', methods=['GET', 'POST'])
 def create_acct():
     Username = request.form.get('new_username')
     PrefName = request.form.get('new_prefname')
@@ -81,12 +82,19 @@ def create_acct():
     Email = request.form.get('new_email')
     AboutMe = request.form.get('new_aboutme')
     Password = request.form.get('new_password')
+    
+    #Backend: Add a github variable name and corresponding functions.
+    try:
+        user = auth.create_user(email=email, password=password)
+        if not Username or not PrefName or not Title or not Email or not AboutMe or not Password:
+            abort(400, "Missing required information. Please fill out all fields.")
 
-    if not Username or not PrefName or not Title or not Email or not AboutMe or not Password:
-        abort(400, "Missing required information. Please fill out all fields.")
-
-    new_account_id = create_account(Username = Username, Prefname = Prefname, Title = Title, Email = Email, AboutMe = AboutMe, Password = Password)
-    return redirect(f'/account/{new_account_id}')
+        new_account_id = create_account(Username = Username, Prefname = Prefname, Title = Title, Email = Email, AboutMe = AboutMe, Password = Password)
+        print('Registration successful. Please login to continue.')
+        return redirect(f'/account/{new_account_id}')
+    except:
+        print("Registration unsuccessful.")
+        return redirect(url_for('create'))
 
 #gets account info
 #FRONT END TEAM - NAME account html page "account.html"
@@ -103,7 +111,7 @@ def get_posts():
     try:
         all_posts = get_all_posts()
    
-         if all_posts:
+        if all_posts:
             return render_template('Feed_page.html', posts=all_posts)
         else:
             abort(404, "No posts found.")
@@ -135,7 +143,7 @@ def new_post():
 
 @app.route('/Account/<int:post_id>/delete')
 def del_acct(acct_id):
-   try:
+    try:
         if get_account(acct_id):
             delete_account(acct_id)
             return redirect('/login')
@@ -148,6 +156,28 @@ def del_acct(acct_id):
 
 
 @app.route('/add_comment')
+
+
+# firebase_admin.initialize_app()
+
+
+@app.route('/login', methods=['POST'])
+def login():
+    # Extract login credentials from request
+    email = request.form['email']
+    password = request.form['password']
+
+    # Sign in the user
+    try:
+        user = auth.sign_in_with_email_and_password(email, password)
+    except FirebaseAuthError as e:
+        print(e.message)
+        return redirect(url_for('login'))
+
+    # Login successful
+    print('Login successful.')
+    return redirect(url_for('home'))
+
 
 
 #Placeholder FOR REESE 

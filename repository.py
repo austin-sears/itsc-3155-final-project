@@ -1,5 +1,5 @@
 import firebase_admin
-from firebase_admin import credentials, auth
+from firebase_admin import credentials, firestore, auth
 
 cred = credentials.Certificate("serviceAccountKey.json")
 firebase_admin.initialize_app(cred)
@@ -39,7 +39,7 @@ def get_one_post(post_id):
 
 #TODO
 #Create a function that gets all comments from database
-def get_comments(post_id)
+def get_comments(post_id):
     comments = []
     comment_ref = db.collection('Comments').where('post_id', '==', post_id)
     docs = comment_ref.get()
@@ -51,10 +51,10 @@ def get_comments(post_id)
 
 #TODO
 #Create a function that adds a comment to a given post
-def add_comment(post_id, commenter_username, comment_text)
+def add_comment(post_id, commenter_username, comment_text):
     new_comment_ref = db.collection('Comments').document()
     new_comment_data = {'post_id': post_id,'commenter_username': commenter_username, 'comment_text': comment_text}
-    new_comment_ref.set new_comment_ref.id
+    new_comment_ref.set(new_comment_ref.id)
     return new_comment_id
 
 
@@ -67,7 +67,7 @@ def create_post(Name, Link, Description, CreatedBy, Code):
 
 
 
-def delete_account(acct_id)
+def delete_account(acct_id):
     acct_ref = db.collection('Users').document(acct_id)
     acct_ref.delete()
     return None

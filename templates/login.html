@@ -5,9 +5,9 @@
 {% endblock %}
 
 {% block nav %}
-    <a class="nav-link" href="#feed">My Feed </a>
+    <a class="nav-link" href="/feed">My Feed </a>
     <a class="nav-link" href="{{ url_for('upload') }}">Upload a Project </a>
-    <a class="nav-link" href="#profile">My Profile</a>
+    <a class="nav-link" href="/profile">My Profile</a>
 {% endblock %}
 
  <!-- TODO -->
@@ -40,9 +40,11 @@
             <input class="form-check-input" type="checkbox" id="gridCheck1">
             <label class="form-check-label" for="gridCheck1">Remember Me</label>
         </div>
-        <button type="button" class="btn btn-dark btn-lg" style="margin:20px">Login</button><br>
+        <button type="submit" class="btn btn-dark btn-lg" style="margin:20px">Login</button><br>
         <p1>Don't have an account yet?</p1><br>
         <p1>Sign up for free today!</p1><br>
-        <button type="button" class="btn btn-dark btn-lg" style="margin:20px">Sign Up</button>
+    </form>
+    <form action="/create_profile" style="text-align:center; padding:50px; margin: 0 auto; width: 500px">
+      <button type="submit" class="btn btn-dark btn-lg" style="margin:20px">Sign Up</button>
     </form>
 {% endblock %}
