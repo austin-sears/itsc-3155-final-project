@@ -15,7 +15,22 @@
     <h1 style="color:white">Post Name </h1>
     <h1 style="color:white">By: @Username_Example</h1>
   </div>
-    <div style="padding: 20px;">
+  <div class="card-body" style="font-size: 25px; font-family: 'Consolas', monospace;">
+    <pre>
+      <code class="html">
+                &lt;form&gt;
+          &lt;h4&gt;Leave a comment&lt;/h4&gt;
+          &lt;textarea name="comment" placeholder="Write your comment here" required&gt;&lt;/textarea&gt;
+          &lt;br&gt;
+          &lt;div style="display: flex; flex-direction: column;"&gt;
+            &lt;a href="#" type="submit" class="btn btn-light" style="background-color: blueviolet; color: white;"&gt;Comment&lt;/a&gt;
+            &lt;a href="#" class="btn btn-light" style="background-color: red; color: white; margin-top: 20px;"&gt;Remove Post&lt;/a&gt; 
+          &lt;/div&gt;
+        &lt;/form&gt;
+      </code>
+    </pre>
+  </div>
+    <div style="padding: 20px; margin-left: 20px;">
       <h5 class="card-title">Example Code <span class="badge bg-secondary">HTML</span> <span class="badge bg-secondary" style="background-color: blueviolet;">CSS</span></h5>
         <userName style="font-family: 'Courier New', Courier, monospace;">
           @Username_Example
@@ -26,8 +41,8 @@
           This HTML code represents a card component, often used in web development to display content in a structured manner.
         </p>
 
-        <div class="comment-section">
-          <h3 style="text-align: center;">Comments</h3>
+        <div class="comment-section" style="text-align: left;">
+          <h3 style="text-align: Left;">Comments:</h3>
           <div class="comment-container">
             <div class="comment">
               <p><strong>@John_Smith:</strong> This is a great article!</p>
@@ -39,18 +54,18 @@
               <p><strong>@Mark_Johnson:</strong> Can you provide more information?</p>
             </div>
           </div>
-          <form class="comment-form">
-            <h4>Leave a comment</h4>
-            <userName style="font-family: 'Courier New', Courier, monospace;">
-              @Username_Example
-            </userName>
-            <textarea name="comment" placeholder="Write your comment here" required></textarea>
-            <a href="#" class="btn btn-light" style="background-color: blueviolet; color: white;">Comment</a> 
-          </div>
-          </form>
         </div>
-
-        <a href="#" class="btn btn-light" style="background-color: red; color: white; margin: 20px; align-self: center;">Remove Post</a> 
+        <form action="/add_comment" method="post">
+          <h4>Leave a comment:</h4>
+          <textarea name="comment" placeholder="Write your comment here" required></textarea>
+          <br>
+          <div style="display: flex;">
+            <a href="#" type="submit" class="btn btn-light" style="background-color: blueviolet; color: white; margin-top: 15px;">Comment</a>
+          </div>
+          <form action="">
+            <a href="#" type = "Remove"class="btn btn-light" style="background-color: red; color: white; margin-top: 15px;">Remove Post</a> 
+          </form>
+        </form>
     </div>
 {% endblock %}
 

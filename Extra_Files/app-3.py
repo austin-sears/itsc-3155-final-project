@@ -1,5 +1,4 @@
-# version 4
-from flask import Flask, render_template, url_for, request, redirect
+from flask import Flask, render_template, url_for
 from repository import *
 
 app = Flask(__name__)
@@ -62,19 +61,19 @@ def feed():
 
 @app.route('/Post')
 def post():
-    return render_template('Post_Page.html')
+    return render_template('single_post.html')
 
-@app.route('/get_comment')
+@app.route('get_comment')
 
 
-@app.route('/add_comment')
+@app.route('add_comment')
 
 #
 #FUNCTIONS----------------------------------------------------
 #
 
 #Creates post
-@app.route('/create_acct', methods=['GET', 'POST'])
+@app.post('/create_acct')
 def create_acct():
     Username = request.form.get('new_username')
     PrefName = request.form.get('new_prefname')
@@ -82,18 +81,19 @@ def create_acct():
     Email = request.form.get('new_email')
     AboutMe = request.form.get('new_aboutme')
     Password = request.form.get('new_password')
-    #Backend: Add a github variable name and corresponding functions.
+
     try:
         user = auth.create_user(email=email, password=password)
-        if not Username or not PrefName or not Title or not Email or not AboutMe or not Password:
-            abort(400, "Missing required information. Please fill out all fields.")
+    except FirebaseAuthError as e:
+        flash(e.message)
+        return redirect(url_for('create_acct'))
 
-        new_account_id = create_account(Username = Username, Prefname = Prefname, Title = Title, Email = Email, AboutMe = AboutMe, Password = Password)
-        print('Registration successful. Please login to continue.')
-        return redirect(f'/account/{new_account_id}')
-    except:
-        print("Registration unsuccessful.")
-        return redirect(url_for('create'))
+    if not Username or not PrefName or not Title or not Email or not AboutMe or not Password:
+        abort(400, "Missing required information. Please fill out all fields.")
+
+    new_account_id = create_account(Username = Username, Prefname = Prefname, Title = Title, Email = Email, AboutMe = AboutMe, Password = Password)
+        flash('Registration successful. Please login to continue.')
+    return redirect(f'/account/{new_account_id}')
 
 #gets account info
 #FRONT END TEAM - NAME account html page "account.html"
@@ -110,7 +110,7 @@ def get_posts():
     try:
         all_posts = get_all_posts()
    
-        if all_posts:
+         if all_posts:
             return render_template('Feed_page.html', posts=all_posts)
         else:
             abort(404, "No posts found.")
@@ -121,7 +121,7 @@ def get_posts():
 def get_post():
     single_post = get_one_post(post_id)
     if single_post:
-        return render_template('Post_Page.html', post = single_post)
+        return render_template('single_post.html', post = single_post)
     else:
         abort(404, f"Post with ID {post_id} not found.")
 
@@ -142,7 +142,7 @@ def new_post():
 
 @app.route('/Account/<int:post_id>/delete')
 def del_acct(acct_id):
-    try:
+   try:
         if get_account(acct_id):
             delete_account(acct_id)
             return redirect('/login')
@@ -170,11 +170,11 @@ def login():
     try:
         user = auth.sign_in_with_email_and_password(email, password)
     except FirebaseAuthError as e:
-        print(e.message)
+        flash(e.message)
         return redirect(url_for('login'))
 
     # Login successful
-    print('Login successful.')
+    flash('Login successful.')
     return redirect(url_for('home'))
 
 

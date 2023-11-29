@@ -63,7 +63,15 @@
     margin-bottom: 10px;
     margin-left: 10px;
     margin-right: 10px;
+    column-width: auto; 
+  }
 
+  .card-body
+  {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
     column-width: auto; 
   }
 
@@ -119,6 +127,4 @@
     outline: none;
     border: 2px solid #4CAF50;
   }
-
-
 
