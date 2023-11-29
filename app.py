@@ -169,6 +169,12 @@ def add_comment_route():
     post_id = data.get('post_id')
     commenter_username = data.get('commenter_username')
     comment_text = data.get('comment_text')
+    if not post_id or not commenter_username or not comment_text:
+            return jsonify({'error': 'Missing required data'}), 400
+        return jsonify({'message': 'Comment added successfully'}), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 
 # firebase_admin.initialize_app()
 
