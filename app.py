@@ -65,11 +65,11 @@ def post():
     return render_template('Post_Page.html')
 
 @app.route('/get_comment', methods=['GET'])
-def get_comment_route():
+def get_comment():
     return jsonify({'message': 'Post_Page.html'})
 
 @app.route('/add_comment', methods=['POST'])
-def add_comment_route():
+def add_comment():
     return jsonify({'message': 'Post_Page.html' })
 
 #
@@ -155,7 +155,7 @@ def del_acct(acct_id):
         abort(500, f"Internal Server Error: {str(e)}")
 
 @app.route('/get_comment', methods=['GET'])
-def get_comments_route():
+def get_comment():
     post_id = request.args.get('post_id')
     if not post_id:
         return jsonify({'error': 'Missing required parameter: post_id'}), 400
@@ -164,7 +164,7 @@ def get_comments_route():
 
 
 @app.route('/add_comment', methods=['POST'])
-def add_comment_route():
+def add_comment():
     data = request.json
     post_id = data.get('post_id')
     commenter_username = data.get('commenter_username')
