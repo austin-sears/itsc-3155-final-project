@@ -5,16 +5,17 @@
 {% endblock %}
 
 {% block nav %}
-    <a class="nav-link" href="#feed">My Feed </a>
+    <a class="nav-link" href="{{ url_for('feed') }}">My Feed </a>
     <a class="nav-link" href="{{ url_for('upload') }}">Upload a Project </a>
-    <a class="nav-link" href="#profile">My Profile</a>
+    <!-- update nav link for my profile once app route is made for it -->
+    <a class="nav-link" href="{{ url_for('account') }}">My Profile</a>
 {% endblock %}
 
 {% block body %}
     <div class="divider">
         <h1 style="color:white">Let's get you in the loop with</h1>
         <h1 style="color:white">new and exciting software projects</h1>
-        <button type="button" class="btn btn-light btn-lg" href="#create_profile" style="margin-right: 70px; margin-left: 10px;">Sign Up</button>
+        <button type="button" class="btn btn-light btn-lg" href="{{ url_for('create_acct')}}" style="margin-right: 70px; margin-left: 10px;">Sign Up</button>
         <button type="button" class="btn btn-light btn-lg" href="{{ url_for('login') }}" style="margin-right: 70px; margin-left: 10px;">Login</button>
     </div>
 {% endblock %}
