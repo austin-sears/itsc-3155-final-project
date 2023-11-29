@@ -74,7 +74,7 @@ def delete_account(acct_id):
 
 
 
-def get_account():
+def get_account(acct_id):
     acct_ref = db.collection('Users').document(acct_id)
     doc = acct_ref.get()
     if doc:

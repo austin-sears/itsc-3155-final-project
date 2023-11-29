@@ -81,7 +81,7 @@ def add_comment():
 def create_acct():
     Username = request.form.get('new_username')
     PrefName = request.form.get('new_prefname')
-    #Title = request.form.get('new_title')
+    Title = request.form.get('new_title')
     Email = request.form.get('new_email')
     AboutMe = request.form.get('new_aboutme')
     Password = request.form.get('new_password')
@@ -109,7 +109,7 @@ def create_acct():
 def get_acct(acct_id):
     single_account = get_account(acct_id)
     if single_account:
-        return render_template('account.html', account = single_account)
+        return render_template('Account_page.html', account = single_account)
     else: 
         abort(404, "Account not found.")
 
