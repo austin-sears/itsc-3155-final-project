@@ -13,20 +13,19 @@
 {% block body %}
 
   <div class="divider">
-    <h1 style="color:white">John D.</h1>
-    <h1 style="color:white">@Username_Example</h1>
+    <h1 style="color:white">{{ account.PrefName }}</h1>
+    <h1 style="color:white">{{ account.Username }}</h1>
   </div>
 
   <ul class="list-group list-group-flush">
-    <li class="list-group-item"><b>Username:</b> @Username_Example</li>
-    <li class="list-group-item"><b>Name:</b> John D.</li>
-    <li class="list-group-item"><b>Email:</b> Example@gmail.com</li>
-    <li class="list-group-item"><b>Github Link:</b> www.githublink.com</li>
-    <li class="list-group-item"><b>About Me:</b> Write a Breif "About Me" to introduce yourself to Collaborators Write a Breif "About Me" to introduce yourself to Collaborators Write a Breif "About Me" to introduce yourself to Collaborators Write a Breif "About Me" to introduce yourself to Collaborators Write a Breif "About Me" to introduce yourself to Collaborators</li>
+    <li class="list-group-item"><b>Username:</b> {{ account.Username }}</li>
+    <li class="list-group-item"><b>Name:</b>{{ account.PrefName }}.</li>
+    <li class="list-group-item"><b>Email:</b> {{ account.Email }}</li>
+    <li class="list-group-item"><b>About Me:</b> {{ account.AboutMe }}</li>
   </ul>
 
   <p style="font-size: 40px; margin: 20px;">
-    @Username_Example's Posts:
+    {{ account.PostsCreated }}
   </p>
 
   <template class="card">
