@@ -66,11 +66,11 @@ def post():
 
 @app.route('/get_comment', methods=['GET'])
 def get_comment():
-    return jsonify({'message': 'single_post.html'})
+    return jsonify({'message': 'Post_Page.html'})
 
 @app.route('/add_comment', methods=['POST'])
 def add_comment():
-    return jsonify({'message': 'single_post.html' })
+    return jsonify({'message': 'Post_Page.html' })
 
 #
 #FUNCTIONS----------------------------------------------------
