@@ -64,12 +64,12 @@ def feed():
 def post():
     return render_template('Post_Page.html')
 
-@app.route('/get_comment_route', methods=['GET'])
-def get_comment():
+@app.route('/get_comment', methods=['GET'])
+def get_comment_route():
     return jsonify({'message': 'Post_Page.html'})
 
-@app.route('/add_comment_route', methods=['POST'])
-def add_comment():
+@app.route('/add_comment', methods=['POST'])
+def add_comment_route():
     return jsonify({'message': 'Post_Page.html' })
 
 #
