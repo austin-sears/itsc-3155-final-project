@@ -64,13 +64,10 @@ def feed():
 def post():
     return render_template('Post_Page.html')
 
-@app.route('get_comment', methods=['GET'])
-def get+comment():
-    return jsonify({'message': 'single_post.html'})
+@app.route('/get_comment')
 
-@app.route('add_comment', methods=['POST'])
-def add_comment():
-    return jsonify({'message': 'single_post.html' })
+
+@app.route('/add_comment')
 
 #
 #FUNCTIONS----------------------------------------------------
@@ -154,21 +151,11 @@ def del_acct(acct_id):
     except Exception as e:
         abort(500, f"Internal Server Error: {str(e)}")
 
-@app.route('/get_comment', methods=['GET'])
-def get_comments_route():
-    post_id = request.args.get('post_id')
-    if not post_id:
-        return jsonify({'error': 'Missing required parameter: post_id'}), 400
-    comments = get_comments(post_id)
-    return jsonify({'comments': comments})
+@app.route('/get_comment')
 
 
-@app.route('/add_comment', methods=['POST'])
-def add_comment_route():
-    data = request.json
-    post_id = data.get('post_id')
-    commenter_username = data.get('commenter_username')
-    comment_text = data.get('comment_text')
+@app.route('/add_comment')
+
 
 # firebase_admin.initialize_app()
 
@@ -189,6 +176,7 @@ def login():
     # Login successful
     print('Login successful.')
     return redirect(url_for('home'))
+
 
 
 #Placeholder FOR REESE 
