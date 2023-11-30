@@ -42,7 +42,9 @@
               <div class="d-flex justify-content-end">
               <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
-                  {% block nav %}{% endblock %}
+                  <a class="nav-link" href="{{ url_for('feed') }}">My Feed </a>
+                  <a class="nav-link" href="{{ url_for('upload') }}">Upload a Project </a>
+                  <a class="nav-link" href="#">My Profile</a>
                 </div>
               </div>
               </div>
