@@ -140,6 +140,7 @@ def new_post():
     Description = request.form.get("new_description")
     CreatedBy = request.form.get("CreatedBy")
     Code = request.form.get("new_code")
+    print('Upload successful.')
     
     if not Name or not Link or not Description or not CreatedBy or not Code:
         abort(400, "Missing required information. Please fill out all fields.")
