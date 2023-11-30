@@ -6,15 +6,18 @@ firebase_admin.initialize_app(cred)
 
 db = firestore.client()
 
+currentUser = {}
+
 #
 #TODO - FRONT END TEAM
 #TRANSFER ALL VARIABLES TO MATCH THE NAMES USED IN THESE FUNCTIONS
 #
 
 #sets all the data in repository, returning the id for the document that contains all of the information
-def create_account(Username, PrefName, Title, Email, AboutMe, Password):
-    new_account_ref = db.collection('Users').document()
-    new_account_data = {'Username': Username, 'PrefName': PrefName, 'Title': Title, 'Email': Email, 'AboutMe': AboutMe, 'Password': Password}
+def create_account(Username, Email, AboutMe, Password):
+    user = auth.create_user(email = Email, password = Password)
+    new_account_ref = db.collection('Users').document(user.uid)
+    new_account_data = {'Username': Username, 'Email': Email, 'AboutMe': AboutMe, 'Password': Password}
     new_account_ref.set(new_account_data)
     new_account_id = new_account_ref.id
     return new_account_id
@@ -83,6 +86,25 @@ def get_account(acct_id):
     else:
         return None
 
-
-
+def verify(email, password):
+    try:
+        user = auth.get_user_by_email(email)
+        print (user)
+        print (user.email)
+        print (user.uid)
+        ref = db.collection('Users').document(user.uid).get().to_dict()
+        print (ref)
+        if ref['Email'] == email and ref['Password'] == password:
+            print("Login Successful")
+            currentUser['uid'] = user.uid
+            currentUser['Username'] = ref['Username']
+            currentUser['Email'] = ref['Email']
+            currentUser['Password'] = ref['Password']
+            currentUser['AboutMe'] = ref['AboutMe']
+            return currentUser
+        else: 
+            print("Invalid Email or Password")
+    except Exception as e:
+        print("Authentication Failed: ", str(e))
+        return None
 

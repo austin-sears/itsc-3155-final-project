@@ -1,45 +1,19 @@
 # version 4
-from flask import Flask, render_template, url_for, request, redirect
+from flask import Flask, render_template, url_for, request, redirect, abort, session
 from repository import *
+# from flask_session import Session
+# from flask_firebase import Firebase
+# from flask_firebase_session import FlaskFirebaseSession
 
 app = Flask(__name__)
 
-#
-#USE ALL THE FUNCTIONS FROM THIS PAGE DO NOT USE REPOSITYORY.PY PAGE 
-#
-#
-#TODO - Matt
-#add abort errors for each function
-# if username = '' or prefname = '' .....
-# abort(400)
-#^^^ This is an example for you
-#
-#
-#
-#TODO - FRONT END TEAM - only add in html files
-#add names for each of the imputs, you can see how I did this in the username input on the Profile_Create page (the part where it says name ="new_username")
-#you can reference create_acct and new_post to see what the names are
-#
-#TODO - FRONT END TEAM CONT
-#make sure the names are the same as what is in single quotes 
-#create an html file for account page other than home
-#either create or upload the feed.html file to the project
-#need an html file for a single post page (single_post.html)
-#I changed Def post to def home post will now be the post page
-#
-#TODO - FRONT END TEAM CONT AGAIN (OR MATT)
-#When referencing the data to display you will need to use the variables I used 
-#for single_post.html (refer to line 84-103) use post and do post.name, post.whatever you need
-#You will need to do this with all information, refer to this file and then hook up the correct variablees
-#
-#RENDER TEMPLATES-----------------------------------------------
-#
+# app.config['SECRET_KEY'] = "yasdfghjk"
 
-#TODO REESE - For render templates and html
-#need to make a file in html for account page other than home (account.html)
-#need to make an app.route for account page (account)
-#need to make an app.route upload or create post page 
-#need to make an app.route for a single post page
+# firebase = Firebase(app)
+# Session(app)
+
+currentUser = {}
+
 @app.route('/')
 def index():
     return render_template('login.html')
@@ -52,13 +26,29 @@ def create():
 def home():
     return render_template('home.html')
 
-@app.route('/upload')
+@app.route('/upload', methods = ['GET', 'POST'])
 def upload():
-    return render_template('upload.html')
+    print(request.method)
+    if request.method == 'POST':
+        Name = request.form.get("new_name")
+        Link = request.form.get("new_link")
+        Description = request.form.get("new_description")
+        CreatedBy = request.form.get("CreatedBy")
+        Code = request.form.get("new_code")
+        print(Name)
+        print(Link)
+        print(Description)
+        print(CreatedBy)
+    
+        if not Name or not Link or not Description or not CreatedBy or not Code:
+            abort(400, "Missing required information. Please fill out all fields.")
 
-@app.route('/feed')
-def feed():
-    return render_template('Feed_page.html')
+        new_post_id = create_post(Name = Name, Link = Link, Description = Description, CreatedBy = CreatedBy, Code = Code)
+        if new_post_id:
+            return redirect('/feed')
+        else:
+            return abort(500, "Failed to Create Post")
+    return render_template('upload.html')
 
 @app.route('/Post')
 def post():
@@ -72,6 +62,10 @@ def get_comment():
 def add_comment():
     return jsonify({'message': 'Post_Page.html' })
 
+@app.route('/profile')
+def home_acct():
+    return render_template('Account_page.html')
+
 #
 #FUNCTIONS----------------------------------------------------
 #
@@ -80,17 +74,13 @@ def add_comment():
 @app.route('/create_acct', methods=['GET', 'POST'])
 def create_acct():
     Username = request.form.get('new_username')
-    PrefName = request.form.get('new_prefname')
-    Title = request.form.get('new_title')
     Email = request.form.get('new_email')
     AboutMe = request.form.get('new_aboutme')
     Password = request.form.get('new_password')
     #Backend: Add a github variable name and corresponding functions.
-    print(Username + " "+ PrefName + " "+ Email + " "+ Password + " ")
+    print(Username +" "+ Email + " "+ Password + " ")
 
-    user = auth.create_user(email = Email, password = Password)
-
-    new_account_id = create_account(Username = Username, Prefname = PrefName, Title = Title, Email = Email, AboutMe = AboutMe, Password = Password)
+    new_account_id = create_account(Username = Username, Email = Email, AboutMe = AboutMe, Password = Password)
     print('Registration successful. Please login to continue.')
     return redirect(f'/account/{new_account_id}')
     # try:
@@ -112,18 +102,6 @@ def get_acct(acct_id):
         return render_template('Account_page.html', account = single_account)
     else: 
         abort(404, "Account not found.")
-
-@app.route('/feed')
-def get_posts():
-    try:
-        all_posts = get_all_posts()
-   
-        if all_posts:
-            return render_template('Feed_page.html', posts=all_posts)
-        else:
-            abort(404, "No posts found.")
-    except Exception as e:
-        abort(500, f"Internal Server Error: {str(e)}")
 
 @app.route('/Post')
 def get_post():
@@ -178,22 +156,49 @@ def add_comment_route():
 # firebase_admin.initialize_app()
 
 
-@app.route('/login', methods=['POST'])
+@app.route('/login', methods=['POST', 'GET'])
 def login():
-    # Extract login credentials from request
-    email = request.form['email']
-    password = request.form['password']
+    if request.method == 'POST':
+        # Extract login credentials from request
+        email = request.form.get('email')
+        password = request.form.get('password')
+        print(email)
+        print(password)
+        # Sign in the user
+        try:
+            user = verify(email, password)
+            print(user)
+            if user != None:
+                currentUser = user
+                print("debug app.py login function")
+                print(currentUser)
+                # session['uid'] = currentUser.get('uid')
+                return redirect('/feed')
+        except Exception as e:
+            print(e)
+            return redirect(url_for('login'))
 
-    # Sign in the user
+        # Login successful
+            print('Login successful.')
+        return redirect('/feed')
+        #return redirect(f'/account/{new_account_id}')
+    return render_template('login.html')
+
+@app.route('/feed')
+def feed():
     try:
-        user = auth.sign_in_with_email_and_password(email, password)
-    except FirebaseAuthError as e:
-        print(e.message)
-        return redirect(url_for('login'))
-
-    # Login successful
-    print('Login successful.')
-    return redirect(url_for('home'))
+        all_posts = get_all_posts()
+        print("feed")
+        print(currentUser.get('uid'))
+        if True: # 'uid' in session:
+            # uid = session['uid']
+            if all_posts:
+                return render_template('Feed_page.html', posts=all_posts)
+            else:
+                abort(404, "No posts found.")
+    except Exception as e:
+        abort(500, f"Internal Server Error: {str(e)}")
+    return render_template('Feed_page.html')
 
 #Placeholder FOR REESE 
 #DO NOT EDIT THIS FILE 
