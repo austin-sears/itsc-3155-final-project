@@ -1,5 +1,5 @@
 # version 4
-from flask import Flask, render_template, url_for, request, redirect, abort, session
+from flask import Flask, jsonify, render_template, url_for, request, redirect, abort, session
 from repository import *
 # from flask_session import Session
 # from flask_firebase import Firebase
@@ -12,6 +12,7 @@ app = Flask(__name__)
 # firebase = Firebase(app)
 # Session(app)
 
+print('resets')
 currentUser = {}
 
 @app.route('/')
@@ -95,6 +96,16 @@ def create_acct():
 
 #gets account info
 #FRONT END TEAM - NAME account html page "account.html"
+
+@app.route('/account/')
+def check_acct():
+    if currentUser == {}:
+        print('Current user not detected')
+        return redirect('/login')
+    else:
+        print('Current user detected')
+        return redirect(url_for('get_acct', acct_id=currentUser.get('uid')))
+
 @app.route('/account/<acct_id>')
 def get_acct(acct_id):
     single_account = get_account(acct_id)
@@ -104,7 +115,7 @@ def get_acct(acct_id):
         abort(404, "Account not found.")
 
 @app.route('/Post')
-def get_post():
+def get_post(post_id):
     single_post = get_one_post(post_id)
     if single_post:
         return render_template('Post_Page.html', post = single_post)
@@ -170,6 +181,7 @@ def login():
             user = verify(email, password)
             print(user)
             if user != None:
+                global currentUser
                 currentUser = user
                 print("debug app.py login function")
                 print(currentUser)
