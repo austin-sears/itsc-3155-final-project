@@ -13,12 +13,12 @@ app = Flask(__name__)
 # firebase = Firebase(app)
 # Session(app)
 
-print('resets')
+# print('resets') <--- debug message
 currentUser = {}
 
 @app.route('/')
 def index():
-    return render_template('login.html')
+    return render_template('home.html')
 
 @app.route('/create_profile')
 def create():
