@@ -1,18 +1,130 @@
+#adding import statements
 from flask import Flask, jsonify, render_template, url_for, request, redirect, abort, session
 from repository import *
 
+#declares app
 app = Flask(__name__)
+
+#sets secret key
 app.secret_key = "LOOP"
 
 
+#############################################################################################################################################################################################################################################
+#BASE PAGES & RUNNING APP
+#########################
+
+#runs app
+if __name__ == "__main__":
+    app.run()
+
+#renders template for home
 @app.route('/')
 def index():
     return render_template('home.html')
 
+#renders template for home
 @app.route('/Home')
 def home():
     return render_template('home.html')
 
+
+#############################################################################################################################################################################################################################################
+#USER RELATED FUNCTIONS
+#######################
+
+#logs in user and sets sessionToken id
+@app.route('/login', methods=['POST', 'GET'])
+def login():
+    if request.method == 'POST':
+        # Extract login credentials from request
+        email = request.form.get('email')
+        password = request.form.get('password')
+        print(email)
+        print(password)
+        # Sign in the user
+        sessionToken_id = verify(email, password)
+        print(sessionToken_id)
+        user_dict = db.collection('Users').document(sessionToken_id).get().to_dict()
+        print(user_dict)
+        print('--------')
+        session['user'] = {
+            'st_id': sessionToken_id,
+            'Username': user_dict['Username'],
+            'user_dict': user_dict
+        }
+        return redirect('/feed')
+    return render_template('login.html')
+
+#logs out user
+@app.route('/logout', methods = ['GET', 'POST'])
+def logout():
+    logout_user(session['user']['st_id'])
+    del session['user']
+    return redirect(url_for('login'))
+
+#Creates account, sending to repository.py
+@app.route('/create_profile', methods=['GET', 'POST'])
+def create_acct():
+    if request.method == 'POST':
+        Username = request.form.get('new_username')
+        Email = request.form.get('new_email')
+        AboutMe = request.form.get('new_aboutme')
+        Password = request.form.get('new_password')
+        new_account_id = create_account(Username = Username, Email = Email, AboutMe = AboutMe, Password = Password)
+        print('Registration successful. Please login to continue.')
+        return redirect('/login')
+    return render_template('Profile_Create.html')
+
+#deletes account, calling function from repository.py
+@app.route('/delete_acct')
+def del_acct():
+    delete_user(session['user']['st_id'])
+    del session['user']
+    return redirect(url_for('login'))
+
+#renders template for home account page
+@app.route('/profile')
+def home_acct():
+    user_info = session.get('user', None)
+    print(user_info)
+    posts = get_user_posts(user_info['Username'])
+
+    return render_template('Account_page.html', account = user_info['user_dict'], posts = posts)
+
+
+#############################################################################################################################################################################################################################################
+#FEED RELATED METHODS
+#####################
+
+#adds element to feed
+def add_element_to_feed(element):
+
+        open("Feed_page.html", "r+")
+        contents = file.read()
+        start_index = contents.index("</template>") + 6  # find the index of "<body>" and add 6 to get after the tag
+        new_contents = contents[:start_index] + "\n" + element + "\n" + contents[start_index:]  # insert new element
+        file.seek(0)  # go back to the beginning of the file
+        file.write(new_contents)  # overwrite with the new contents
+        file.close()
+        print ('Feed_page updated. File closed')
+
+#renders template for the feed page
+@app.route('/feed')
+def feed():
+    try:
+        user_info = session.get('user', None)
+        print(user_info)
+        all_posts = get_all_posts()
+        print(all_posts)
+        return render_template('Feed_page.html', posts=all_posts, username = user_info['Username'])
+    except Exception as e:
+        abort(500, f"Internal Server Error: {str(e)}")
+
+#############################################################################################################################################################################################################################################
+#POST RELATED FUNCTIONS
+#######################
+
+#uploads post and calls function from repository.py
 @app.route('/upload', methods = ['GET', 'POST'])
 def upload():
     print(request.method)
@@ -37,52 +149,7 @@ def upload():
             return abort(500, "Failed to Create Post")
     return render_template('upload.html')
 
-@app.route('/get_comment', methods=['GET'])
-def get_comment():
-    return jsonify({'message': 'Post_Page.html'})
-
-@app.route('/add_comment', methods=['POST'])
-def add_comment():
-    return jsonify({'message': 'Post_Page.html' })
-
-@app.route('/profile')
-def home_acct():
-    user_info = session.get('user', None)
-    print(user_info)
-    posts = get_user_posts(user_info['Username'])
-
-    return render_template('Account_page.html', account = user_info['user_dict'], posts = posts)
-
-
-def add_element_to_feed(element):
-
-        open("Feed_page.html", "r+")
-        contents = file.read()
-        start_index = contents.index("</template>") + 6  # find the index of "<body>" and add 6 to get after the tag
-        new_contents = contents[:start_index] + "\n" + element + "\n" + contents[start_index:]  # insert new element
-        file.seek(0)  # go back to the beginning of the file
-        file.write(new_contents)  # overwrite with the new contents
-        file.close()
-        print ('Feed_page updated. File closed')
-
-
-
-#Creates account
-@app.route('/create_profile', methods=['GET', 'POST'])
-def create_acct():
-    if request.method == 'POST':
-        Username = request.form.get('new_username')
-        Email = request.form.get('new_email')
-        AboutMe = request.form.get('new_aboutme')
-        Password = request.form.get('new_password')
-    #Backend: Add a github variable name and corresponding functions.
-
-        new_account_id = create_account(Username = Username, Email = Email, AboutMe = AboutMe, Password = Password)
-        print('Registration successful. Please login to continue.')
-        return redirect('/login')
-    return render_template('Profile_Create.html')
-
-
+#second upload function
 @app.post('/upload')
 def new_post():
     Name = request.form.get("new_name")
@@ -98,78 +165,7 @@ def new_post():
     new_post_id = create_post(Name = Name, Link = Link, Description = Description, CreatedBy = CreatedBy, Code = Code)
     return redirect('/feed')
 
-
-@app.route('/get_comment', methods=['GET'])
-def get_comments_route():
-    post_id = request.args.get('post_id')
-    if not post_id:
-        return jsonify({'error': 'Missing required parameter: post_id'}), 400
-    comments = get_comments(post_id)
-    return jsonify({'comments': comments})
-
-
-@app.route('/add_comment', methods=['POST'])
-def add_comment_route():
-    data = request.json
-    post_id = data.get('post_id')
-    commenter_username = data.get('commenter_username')
-    comment_text = data.get('comment_text')
-
-# firebase_admin.initialize_app()
-
-
-@app.route('/login', methods=['POST', 'GET'])
-def login():
-    if request.method == 'POST':
-        # Extract login credentials from request
-        email = request.form.get('email')
-        password = request.form.get('password')
-        print(email)
-        print(password)
-        # Sign in the user
-        sessionToken_id = verify(email, password)
-        print(sessionToken_id)
-        user_dict = db.collection('Users').document(sessionToken_id).get().to_dict()
-        print(user_dict)
-        print('--------')
-        session['user'] = {
-            'st_id': sessionToken_id,
-            'Username': user_dict['Username'],
-            'user_dict': user_dict
-        }
-        return redirect('/feed')
-    return render_template('login.html')
-
-
-
-@app.route('/feed')
-def feed():
-    try:
-        user_info = session.get('user', None)
-        print(user_info)
-        all_posts = get_all_posts()
-        print(all_posts)
-        return render_template('Feed_page.html', posts=all_posts, username = user_info['Username'])
-    except Exception as e:
-        abort(500, f"Internal Server Error: {str(e)}")
-
-if __name__ == "__main__":
-    app.run()
-
-
-@app.route('/logout', methods = ['GET', 'POST'])
-def logout():
-    logout_user(session['user']['st_id'])
-    del session['user']
-    return redirect(url_for('login'))
-
-@app.route('/delete_acct')
-def del_acct():
-    delete_user(session['user']['st_id'])
-    del session['user']
-    return redirect(url_for('login'))
-
-
+#gets single post calling repository,py function
 @app.route('/Post/<post_id>')
 def get_post(post_id):
     user_info = session.get('user', None)
@@ -184,9 +180,38 @@ def get_post(post_id):
        return render_template('Post_Page.html', post_id = post_id, post = single_post, username = user_info, CreatedBy = CreatedBy)
     return render_template('Post_Page.html')
 
+#deletes post, calling repository.py function
 @app.route('/Post/delete/<post_id>')
 def del_post(post_id):
     # post_id = request.form.get('post_id')
     print(post_id)
     delete_post(post_id)
     return redirect('/profile')
+
+
+#############################################################################################################################################################################################################################################
+#COMMENT RELATED FUNCTIONS
+##########################
+
+@app.route('/get_comment', methods=['GET'])
+def get_comment():
+    return jsonify({'message': 'Post_Page.html'})
+
+@app.route('/add_comment', methods=['POST'])
+def add_comment():
+    return jsonify({'message': 'Post_Page.html' })
+
+@app.route('/get_comment', methods=['GET'])
+def get_comments_route():
+    post_id = request.args.get('post_id')
+    if not post_id:
+        return jsonify({'error': 'Missing required parameter: post_id'}), 400
+    comments = get_comments(post_id)
+    return jsonify({'comments': comments})
+
+@app.route('/add_comment', methods=['POST'])
+def add_comment_route():
+    data = request.json
+    post_id = data.get('post_id')
+    commenter_username = data.get('commenter_username')
+    comment_text = data.get('comment_text')
