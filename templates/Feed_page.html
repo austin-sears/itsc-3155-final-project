@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block nav %}
+    <a class="nav-link active" aria-current="page"  href="/feed">My Feed </a>
+    <a class="nav-link" href="{{ url_for('upload') }}">Upload a Project </a>
+    <a class="nav-link" href="/account">My Profile</a>
+{% endblock %}
+
+{% block body %}
+<div>
+    <div class="divider">
+    <h1 style="color:white">Your Feed</h1>
+    <h1 style="color:white">Stay in the LOOP</h1>
+  </div>
+  <template class="card">
+    <div class="card-body">
+      <h5 class="card-title">Example Code <span class="badge bg-secondary">HTML</span> <span class="badge bg-secondary" style="background-color: blueviolet;">CSS</span></h5>
+      <userName style="font-family: 'Courier New', Courier, monospace;">
+        @Username_Example <!--Remember This needs to be the Username and needs to point back to that user's account when clicked!-->
+      </userName>
+      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+      <a href="#" class="btn btn-light" style="background-color: blueviolet; color: white;">See full Post</a>
+    </div>
+  </template>
+
+  <div class="card" style="margin: 10px">
+    <div class="card-body">
+      <Content class="card-body"style="font-size: 25px; font-family: 'Consolas', monospace;">
+        <pre>
+          <code class="html">
+            This is some text within a card body
+              &lt;h5 class="card-title"&gt;Example Project Name &lt;span class="badge bg-secondary"&gt;HTML&lt;/span&gt; &lt;span class="badge bg-secondary" style="background-color: blueviolet;"&gt;CSS&lt;/span&gt;&lt;/h5&gt;
+              &lt;userName style="font-family: 'Courier New', Courier, monospace;"&gt;
+                  @Username_Example
+              &lt;/userName&gt;
+              &lt;p class="card-text"&gt;Some quick example text to build on the card title and make up the bulk of the card's content.&lt;/p&gt;
+              &lt;a href="#" class="btn btn-light" style="background-color: blueviolet; color: white;"&gt;See full Post&lt;/a&gt;
+              &lt;a href="#"
+          </code>
+        </pre>
+      </Content>
+      <h5 class="card-title">Example Project Name <span class="badge bg-secondary">HTML</span> <span class="badge bg-secondary" style="background-color: blueviolet;">CSS</span></h5>
+      <userName style="font-family: 'Courier New', Courier, monospace;">
+        @Username_Example
+      </userName>
+      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+          <a href="/Post"class="btn btn-light" style="background-color: blueviolet; color: white;">See full Post</a> 
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+  <script type="module">
+
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+  
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+      apiKey: "AIzaSyCskM9LOUxh2u6n0VHUm5OcoOQ-3vqcC8c",
+      authDomain: "loop-5d015.firebaseapp.com",
+      projectId: "loop-5d015",
+      storageBucket: "loop-5d015.appspot.com",
+      messagingSenderId: "289520327252",
+      appId: "1:289520327252:web:c6b786967f08ca3c6b6bc1",
+      measurementId: "G-Y1NC3DPKYN"
+    };
+  
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+    const analytics = getAnalytics(app);
+  </script>
+
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+</body>
+<footer>
+</footer>
