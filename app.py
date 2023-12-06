@@ -1,28 +1,13 @@
-# version 4
 from flask import Flask, jsonify, render_template, url_for, request, redirect, abort, session
 from repository import *
-# from flask_session import Session
-# from flask_firebase import Firebase
-# from flask_firebase_session import FlaskFirebaseSession
-# import the necessary libraries
 
 app = Flask(__name__)
+app.secret_key = "LOOP"
 
-# app.config['SECRET_KEY'] = "yasdfghjk"
-
-# firebase = Firebase(app)
-# Session(app)
-
-# print('resets') <--- debug message
-currentUser = {}
 
 @app.route('/')
 def index():
     return render_template('home.html')
-
-@app.route('/create_profile')
-def create():
-    return render_template('Profile_Create.html')
 
 @app.route('/Home')
 def home():
@@ -52,10 +37,6 @@ def upload():
             return abort(500, "Failed to Create Post")
     return render_template('upload.html')
 
-@app.route('/Post')
-def post():
-    return render_template('Post_Page.html')
-
 @app.route('/get_comment', methods=['GET'])
 def get_comment():
     return jsonify({'message': 'Post_Page.html'})
@@ -66,11 +47,11 @@ def add_comment():
 
 @app.route('/profile')
 def home_acct():
-    return render_template('Account_page.html')
+    user_info = session.get('user', None)
+    print(user_info)
+    posts = get_user_posts(user_info['Username'])
 
-#
-#FUNCTIONS----------------------------------------------------
-#
+    return render_template('Account_page.html', account = user_info['user_dict'], posts = posts)
 
 
 def add_element_to_feed(element):
@@ -86,56 +67,21 @@ def add_element_to_feed(element):
 
 
 
-#Creates post
-@app.route('/create_acct', methods=['GET', 'POST'])
+#Creates account
+@app.route('/create_profile', methods=['GET', 'POST'])
 def create_acct():
-    Username = request.form.get('new_username')
-    Email = request.form.get('new_email')
-    AboutMe = request.form.get('new_aboutme')
-    Password = request.form.get('new_password')
+    if request.method == 'POST':
+        Username = request.form.get('new_username')
+        Email = request.form.get('new_email')
+        AboutMe = request.form.get('new_aboutme')
+        Password = request.form.get('new_password')
     #Backend: Add a github variable name and corresponding functions.
-    print(Username +" "+ Email + " "+ Password + " ")
 
-    new_account_id = create_account(Username = Username, Email = Email, AboutMe = AboutMe, Password = Password)
-    print('Registration successful. Please login to continue.')
-    return redirect(f'/account/{new_account_id}')
-    # try:
-    #     if not Username or not PrefName or not Email or not AboutMe or not Password:
-    #         abort(400, "Missing required information. Please fill out all fields.")
-
-        
-    # except:
-    #     print("Registration unsuccessful.")
-    #     return redirect(url_for('create'))
-
-
-#gets account info
-#FRONT END TEAM - NAME account html page "account.html"
-
-@app.route('/account/')
-def check_acct():
-    if currentUser == {}:
-        print('Current user not detected')
+        new_account_id = create_account(Username = Username, Email = Email, AboutMe = AboutMe, Password = Password)
+        print('Registration successful. Please login to continue.')
         return redirect('/login')
-    else:
-        print('Current user detected')
-        return redirect(url_for('get_acct', acct_id=currentUser.get('uid')))
+    return render_template('Profile_Create.html')
 
-@app.route('/account/<acct_id>')
-def get_acct(acct_id):
-    single_account = get_account(acct_id)
-    if single_account:
-        return render_template('Account_page.html', account = single_account)
-    else: 
-        abort(404, "Account not found.")
-
-@app.route('/Post')
-def get_post(post_id):
-    single_post = get_one_post(post_id)
-    if single_post:
-        return render_template('Post_Page.html', post = single_post)
-    else:
-        abort(404, f"Post with ID {post_id} not found.")
 
 @app.post('/upload')
 def new_post():
@@ -152,17 +98,6 @@ def new_post():
     new_post_id = create_post(Name = Name, Link = Link, Description = Description, CreatedBy = CreatedBy, Code = Code)
     return redirect('/feed')
 
-
-@app.route('/Account/<int:post_id>/delete')
-def del_acct(acct_id):
-    try:
-        if get_account(acct_id):
-            delete_account(acct_id)
-            return redirect('/login')
-        else:
-            abort(404, "Account not found.")
-    except Exception as e:
-        abort(500, f"Internal Server Error: {str(e)}")
 
 @app.route('/get_comment', methods=['GET'])
 def get_comments_route():
@@ -192,46 +127,66 @@ def login():
         print(email)
         print(password)
         # Sign in the user
-        try:
-            user = verify(email, password)
-            print(user)
-            if user != None:
-                global currentUser
-                currentUser = user
-                print("debug app.py login function")
-                print(currentUser)
-                # session['uid'] = currentUser.get('uid')
-                return redirect('/feed')
-        except Exception as e:
-            print(e)
-            return redirect(url_for('login'))
-
-        # Login successful
-            print('Login successful.')
+        sessionToken_id = verify(email, password)
+        print(sessionToken_id)
+        user_dict = db.collection('Users').document(sessionToken_id).get().to_dict()
+        print(user_dict)
+        print('--------')
+        session['user'] = {
+            'st_id': sessionToken_id,
+            'Username': user_dict['Username'],
+            'user_dict': user_dict
+        }
         return redirect('/feed')
-        #return redirect(f'/account/{new_account_id}')
     return render_template('login.html')
+
+
 
 @app.route('/feed')
 def feed():
     try:
+        user_info = session.get('user', None)
+        print(user_info)
         all_posts = get_all_posts()
-        print("feed")
-        print(currentUser.get('uid'))
-        if True: # 'uid' in session:
-            # uid = session['uid']
-            if all_posts:
-                return render_template('Feed_page.html', posts=all_posts)
-            else:
-                abort(404, "No posts found.")
+        print(all_posts)
+        return render_template('Feed_page.html', posts=all_posts, username = user_info['Username'])
     except Exception as e:
         abort(500, f"Internal Server Error: {str(e)}")
-    return render_template('Feed_page.html')
-
-
-
-#Placeholder FOR REESE 
-#DO NOT EDIT THIS FILE 
 
 if __name__ == "__main__":
     app.run()
+
+
+@app.route('/logout', methods = ['GET', 'POST'])
+def logout():
+    logout_user(session['user']['st_id'])
+    del session['user']
+    return redirect(url_for('login'))
+
+@app.route('/delete_acct')
+def del_acct():
+    delete_user(session['user']['st_id'])
+    del session['user']
+    return redirect(url_for('login'))
+
+
+@app.route('/Post/<post_id>')
+def get_post(post_id):
+    user_info = session.get('user', None)
+
+    single_post = get_one_post(post_id)
+    if single_post:
+       if single_post['CreatedBy'] == user_info['Username']:
+           CreatedBy = True
+       else:
+           CreatedBy = False
+        #   comments = get_comments(post_id)
+       return render_template('Post_Page.html', post_id = post_id, post = single_post, username = user_info, CreatedBy = CreatedBy)
+    return render_template('Post_Page.html')
+
+@app.route('/Post/delete/<post_id>')
+def del_post(post_id):
+    # post_id = request.form.get('post_id')
+    print(post_id)
+    delete_post(post_id)
+    return redirect('/profile')
