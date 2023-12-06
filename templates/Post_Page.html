@@ -6,8 +6,7 @@
 
 {% block body %}
   <div class="divider">
-    <h1 style="color:white">Post Name </h1>
-    <h1 style="color:white">By: @Username_Example</h1>
+    <h1 style="color:white">{{post.Name}} </h1>
   </div>
   <div class="card-body" style="font-size: 25px; font-family: 'Consolas', monospace;">
     <pre>
@@ -25,14 +24,14 @@
     </pre>
   </div>
     <div style="padding: 20px; margin-left: 20px;">
-      <h5 class="card-title">Example Code <span class="badge bg-secondary">HTML</span> <span class="badge bg-secondary" style="background-color: blueviolet;">CSS</span></h5>
+      <h5 class="card-title">{{post.Code}} <span class="badge bg-secondary">HTML</span> <span class="badge bg-secondary" style="background-color: blueviolet;">CSS</span></h5>
         <userName style="font-family: 'Courier New', Courier, monospace;">
-          @Username_Example
+          @{{post.Username}}
         </userName>
-        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        <p class="card-text"></p><!-- I dont know what to put here - reese --></p></p>
         <p>
           Description:
-          This HTML code represents a card component, often used in web development to display content in a structured manner.
+          {{post.Description}}
         </p>
 
         <div class="comment-section" style="text-align: left;">
@@ -56,9 +55,11 @@
           <div style="display: flex;">
             <a href="#" type="submit" class="btn btn-light" style="background-color: blueviolet; color: white; margin-top: 15px;">Comment</a>
           </div>
+          {% if CreatedBy %}
           <form action="">
-            <a href="#" type = "Remove"class="btn btn-light" style="background-color: red; color: white; margin-top: 15px;">Remove Post</a> 
+            <a href="/Post/delete/{{post.post_id}}" type = "Remove"class="btn btn-light" style="background-color: red; color: white; margin-top: 15px;">Remove Post</a> 
           </form>
+          {% endif %}
         </form>
     </div>
 {% endblock %}
