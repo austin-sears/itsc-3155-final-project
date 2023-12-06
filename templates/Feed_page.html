@@ -13,44 +13,24 @@
 {% block body %}
 <div>
     <div class="divider">
-    <h1 style="color:white">Your Feed</h1>
+    <h1 style="color:white">{{username}}'s Feed</h1>
     <h1 style="color:white">Stay in the LOOP</h1>
   </div>
-  <template class="card">
-    <div class="card-body">
-      <h5 class="card-title">Example Code <span class="badge bg-secondary">HTML</span> <span class="badge bg-secondary" style="background-color: blueviolet;">CSS</span></h5>
-      <userName style="font-family: 'Courier New', Courier, monospace;">
-        @Username_Example <!--Remember This needs to be the Username and needs to point back to that user's account when clicked!-->
-      </userName>
-      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-      <a href="#" class="btn btn-light" style="background-color: blueviolet; color: white;">See full Post</a>
-    </div>
-  </template>
 
+  {% for post in posts %}
   <div class="card" style="margin: 10px">
     <div class="card-body">
-      <Content class="card-body"style="font-size: 25px; font-family: 'Consolas', monospace;">
-        <pre>
-          <code class="html">
-            This is some text within a card body
-              &lt;h5 class="card-title"&gt;Example Project Name &lt;span class="badge bg-secondary"&gt;HTML&lt;/span&gt; &lt;span class="badge bg-secondary" style="background-color: blueviolet;"&gt;CSS&lt;/span&gt;&lt;/h5&gt;
-              &lt;userName style="font-family: 'Courier New', Courier, monospace;"&gt;
-                  @Username_Example
-              &lt;/userName&gt;
-              &lt;p class="card-text"&gt;Some quick example text to build on the card title and make up the bulk of the card's content.&lt;/p&gt;
-              &lt;a href="#" class="btn btn-light" style="background-color: blueviolet; color: white;"&gt;See full Post&lt;/a&gt;
-              &lt;a href="#"
-          </code>
-        </pre>
-      </Content>
-      <h5 class="card-title">Example Project Name <span class="badge bg-secondary">HTML</span> <span class="badge bg-secondary" style="background-color: blueviolet;">CSS</span></h5>
+      <h5 class="card-title"> {{post.Name}} <span class="badge bg-secondary"><!--FRONT END TEAM::: add in tags here--></span> <span class="badge bg-secondary" style="background-color: blueviolet;">CSS</span></h5>
       <userName style="font-family: 'Courier New', Courier, monospace;">
-        @Username_Example
+        @{{post.CreatedBy}}
       </userName>
-      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-          <a href="/Post"class="btn btn-light" style="background-color: blueviolet; color: white;">See full Post</a> 
+      <p class="card-text">{{post.Description}}</p>
+          <a href="/Post/{{post.post_id}}"class="btn btn-light" style="background-color: blueviolet; color: white;">See Full Post</a> 
+          <a href="#" class="btn btn-light" style="background-color: red; color: white;">Remove</a> 
     </div>
+
   </div>
+  {% endfor %}
 </div>
 
 {% endblock %}

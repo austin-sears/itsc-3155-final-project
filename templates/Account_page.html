@@ -4,56 +4,57 @@
 
 {% endblock %}
 
-{% block nav %}
     <a class="nav-link" href="{{ url_for('feed') }}">My Feed </a>
     <a class="nav-link" href="{{ url_for('upload') }}">Upload a Project </a>
-    <a class="nav-link" href="#profile">My Profile</a>
-{% endblock %}
+    <a class="nav-link" href="{{ url_for('logout') }}"> Logout </a>
 
 {% block body %}
 
   <div class="divider">
-    <h1 style="color:white">{{ account.PrefName }}</h1>
     <h1 style="color:white">{{ account.Username }}</h1>
   </div>
 
   <ul class="list-group list-group-flush">
-    <li class="list-group-item"><b>Username:</b> {{ account.Username }}</li>
-    <li class="list-group-item"><b>Name:</b>{{ account.PrefName }}.</li>
+    <li class="list-group-item"><b>Username:</b> {{ account.Username }}'s Page</li>
     <li class="list-group-item"><b>Email:</b> {{ account.Email }}</li>
     <li class="list-group-item"><b>About Me:</b> {{ account.AboutMe }}</li>
   </ul>
 
   <p style="font-size: 40px; margin: 20px;">
-    {{ account.PostsCreated }}
   </p>
 
+{% for post in posts %}
+
   <template class="card">
-    <img src="images\Screenshot 2023-11-12 173816.jpg" class="card-img-top" alt="...">
     <div class="card-body">
         
-      <h5 class="card-title">Example Code <span class="badge bg-secondary">HTML</span> <span class="badge bg-secondary" style="background-color: blueviolet;">CSS</span></h5>
+      <h5 class="card-title">{{post.Code}} <span class="badge bg-secondary">HTML</span> <span class="badge bg-secondary" style="background-color: blueviolet;">CSS</span></h5>
       <userName style="font-family: 'Courier New', Courier, monospace;">
-        @Username_Example
+        @{{account.Username}}
       </userName>
-      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+      <p class="card-text">{{post.Description}}</p>
       <a href="#" class="btn btn-light" style="background-color: blueviolet; color: white;">See full Post</a>
     </div>
   </template>
 
   <div class="card">
-    <img src="images\Screenshot 2023-11-12 173816.jpg" class="card-img-top" alt="...">
     <div class="card-body">
         
-      <h5 class="card-title">Example Code <span class="badge bg-secondary">HTML</span> <span class="badge bg-secondary" style="background-color: blueviolet;">CSS</span></h5>
+      <h5 class="card-title">{{post.Code}}<span class="badge bg-secondary">HTML</span> <span class="badge bg-secondary" style="background-color: blueviolet;">CSS</span></h5>
       <userName style="font-family: 'Courier New', Courier, monospace;">
-        @Username_Example
+        @{{account.Username}}
       </userName>
-      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-      <a href="#" class="btn btn-light" style="background-color: blueviolet; color: white;">See full Post</a> 
-      <a href="#" class="btn btn-light" style="background-color: red; color: white;">Remove</a> 
+      <p class="card-text">{{post.Description}}</p>
+      <a href="/Post/{{post.post_id}}" class="btn btn-light" style="background-color: blueviolet; color: white;">See full Post</a> 
     </div>
   </div>
+
+  {% endfor %}
+
+  <form action = "/logout" >
+    <button type = "submit" class = "btn btn-danger">Logout</button>
+  </form>
+
 {% endblock %}
 
 
