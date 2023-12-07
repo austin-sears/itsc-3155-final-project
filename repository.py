@@ -136,5 +136,40 @@ def add_comment(post_id, commenter_username, comment_text):
     new_comment_ref.set(new_comment_ref.id)
     return new_comment_id
 
+#
+def remove_comment(comment_id):
+    comment_ref = db.collection('Comments').document(comment_id)
+    if comment_ref.get().exists:
+        comment_ref.delete()
+        return True
+    else:
+        return False
+
+
 
 #############################################################################################################################################################################################################################################
+#Task RELATED FUNCTIONS
+##########################
+
+#
+def add_tag(tag_id, tag_name):
+    tag_ref = db.colelction('Tags').docuemt(tag_id)
+    if not tag.ref.get().exists:
+        tag_data = {'tag_name': tag_name}
+        tag_ref.set(tag_data)
+        return True
+    else:
+        return False
+
+def remove_tag(tag_id):
+    tag_ref = db.colelction('Tags').docuemt(tag_id)
+    if  tag_ref.get().exists:
+        tag_ref.delete()
+        return True
+    else:
+        return False
+
+def get_tag(tag_id):
+    tag_ref = db.collection('Tags').docuemt(tag_id)
+    tag_data = tag.ref.get().to_dict()
+    return tag_data if tag_data else None
