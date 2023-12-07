@@ -11,30 +11,26 @@
   <div class="card-body" style="font-size: 25px; font-family: 'Consolas', monospace;">
     <pre>
       <code class="html">
-                &lt;form&gt;
-          &lt;h4&gt;Leave a comment&lt;/h4&gt;
-          &lt;textarea name="comment" placeholder="Write your comment here" required&gt;&lt;/textarea&gt;
-          &lt;br&gt;
-          &lt;div style="display: flex; flex-direction: column;"&gt;
-            &lt;a href="#" type="submit" class="btn btn-light" style="background-color: blueviolet; color: white;"&gt;Comment&lt;/a&gt;
-            &lt;a href="#" class="btn btn-light" style="background-color: red; color: white; margin-top: 20px;"&gt;Remove Post&lt;/a&gt; 
-          &lt;/div&gt;
-        &lt;/form&gt;
+        {{post.Code}}
       </code>
     </pre>
   </div>
-    <div style="padding: 20px; margin-left: 20px;">
-      <h5 class="card-title">{{post.Code}} <span class="badge bg-secondary">HTML</span> <span class="badge bg-secondary" style="background-color: blueviolet;">CSS</span></h5>
-        <userName style="font-family: 'Courier New', Courier, monospace;">
-          @{{post.Username}}
-        </userName>
-        <p class="card-text"></p><!-- I dont know what to put here - reese --></p></p>
-        <p>
+    <div style="padding: 10px; margin-left: 20px;">
+      <h5>
+        From:
+      </h5>
+      <userName style="font-family: 'Courier New', Courier, monospace; font-size:larger; padding: 10px; margin-bottom: 10px;">
+        <i>@{{post.CreatedBy}}</i>
+      </userName>
+      <h5 class="card-title">Laguages used:  <span class="badge bg-secondary">HTML</span> <span class="badge bg-secondary" style="background-color: blueviolet;">CSS</span></h5>
+        <h5>
           Description:
+        </h5>
+        <p>
           {{post.Description}}
         </p>
 
-        <div class="comment-section" style="text-align: left;">
+        <div class="comment-section" style="text-align: left; padding: 10px;">
           <h3 style="text-align: Left;">Comments:</h3>
           <div class="comment-container">
             <div class="comment">
