@@ -193,13 +193,13 @@ def del_post(post_id):
 #COMMENT RELATED FUNCTIONS
 ##########################
 
-@app.route('/get_comment', methods=['GET'])
-def get_comment():
-    return jsonify({'message': 'Post_Page.html'})
+#@app.route('/get_comment', methods=['GET'])
+#def get_comment():
+#    return jsonify({'message': 'Post_Page.html'})
 
-@app.route('/add_comment', methods=['POST'])
-def add_comment():
-    return jsonify({'message': 'Post_Page.html' })
+#@app.route('/add_comment', methods=['POST'])
+#def add_comment():
+#    return jsonify({'message': 'Post_Page.html' })
 
 @app.route('/get_comment', methods=['GET'])
 def get_comments_route():
@@ -248,7 +248,7 @@ def add_tag_route():
     else:
         return jsonify({'error': "Tag with given ID already exists"})
 
-@app.route('/remove_tag', methods=[DELETE])
+@app.route('/remove_tag', methods=['DELETE'])
 def remove_tag_route():
     tag_id = request.args.get('tag_id')
 
@@ -261,9 +261,9 @@ def remove_tag_route():
     else:
         return jsonify({'error': 'Tag not found or could not be removed'})
 
-@app.route('get_tag', methods=['GET'])
+@app.route('/get_tag', methods=['GET'])
 def get_tag_route():
-    tag_id = requests.args.get('tag_id')
+    tag_id = request.args.get('tag_id')
 
     if not tag_id:
         return jsonify({'error': 'Missing requred parameters: tag_id'})
