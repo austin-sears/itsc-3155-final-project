@@ -215,3 +215,61 @@ def add_comment_route():
     post_id = data.get('post_id')
     commenter_username = data.get('commenter_username')
     comment_text = data.get('comment_text')
+
+@app.route('/remove_comment', methods = ["DELETE"])
+def remove_comment_route():
+    comment_id = request.args.get('comment_id')
+    if not comment_id:
+        return jsonify({'error': 'Missing required parameter: comment_id'}), 400
+    success = remove_comment(comment_id)
+
+    if success:
+        return jsonify({'message': 'Comment removed successfully'})
+    else:
+        return jsonify({'error': 'Comment not found or could not be removed'}), 404
+
+
+#############################################################################################################################################################################################################################################
+#TAG RELATED FUNCTIONS
+##########################
+
+@app.route('/add_tag', methods=['POST'])
+def add_tag_route():
+    data = request.json
+    tag_id = data.get('tag_id')
+    tag_name = data.get('tag_name')
+
+    if not tag_id or not tag_name:
+        return jsonify({'error': 'Missing required parameters'}), 400
+    success = add_tag(tag_id, tag_name)
+
+    if success:
+        return jsonify({'message': 'Tag added successfully'})
+    else:
+        return jsonify({'error': "Tag with given ID already exists"})
+
+@app.route('/remove_tag', methods=[DELETE])
+def remove_tag_route():
+    tag_id = request.args.get('tag_id')
+
+    if not tag_id:
+        return jsonify({'error': 'Missing requred parameters:'})
+    success = remove_tag(tag_id)
+
+    if success:
+        return jsonify({'message': 'Tag removed successfully'})
+    else:
+        return jsonify({'error': 'Tag not found or could not be removed'})
+
+@app.route('get_tag', methods=['GET'])
+def get_tag_route():
+    tag_id = requests.args.get('tag_id')
+
+    if not tag_id:
+        return jsonify({'error': 'Missing requred parameters: tag_id'})
+    tag_data = get_tag(tag_id)
+
+    if tag_data:
+        return jsonify({'tag_data': tag_data})
+    else:
+        return jsonify({'error': 'Tag not found'}), 404
