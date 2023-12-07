@@ -41,7 +41,7 @@ def logout_user(uid):
 #deletes the current user
 def delete_user(uid):
     auth.revoke_refresh_tokens(uid)
-    db.collection('Users').document(uid).delete(uid).delete()
+    db.collection('Users').document(uid).delete()
     auth.delete_user(uid)
     return None
 
