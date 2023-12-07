@@ -155,7 +155,7 @@ def remove_comment(comment_id):
 
 #
 def add_tag(tag_id, tag_name):
-    tag_ref = db.colelction('Tags').docuemt(tag_id)
+    tag_ref = db.collection('Tags').document(tag_id)
     if not tag_ref.get().exists:
         tag_data = {'tag_name': tag_name}
         tag_ref.set(tag_data)
@@ -164,7 +164,7 @@ def add_tag(tag_id, tag_name):
         return False
 
 def remove_tag(tag_id):
-    tag_ref = db.colelction('Tags').docuemt(tag_id)
+    tag_ref = db.collection('Tags').document(tag_id)
     if  tag_ref.get().exists:
         tag_ref.delete()
         return True
@@ -172,6 +172,6 @@ def remove_tag(tag_id):
         return False
 
 def get_tag(tag_id):
-    tag_ref = db.collection('Tags').docuemt(tag_id)
+    tag_ref = db.collection('Tags').document(tag_id)
     tag_data = tag_ref.get().to_dict()
     return tag_data if tag_data else None
