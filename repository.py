@@ -126,6 +126,7 @@ def get_comments(post_id):
     docs = comment_ref.get()
     for doc in docs:
         comment_data = doc.to_dict()
+        comment_data['comment_id'] = doc.id
         comments.append(comment_data)
     return comments
 
@@ -144,6 +145,7 @@ def remove_comment(comment_id):
         return True
     else:
         return False
+
 
 
 
