@@ -193,6 +193,7 @@ def get_post(post_id):
        if single_post['CreatedBy'] == user_info['Username']:
            CreatedBy = True
            comments = get_comments(post_id)
+               
        else:
            CreatedBy = False
        return render_template('Post_Page.html', post_id = post_id, post = single_post, username = user_info, CreatedBy = CreatedBy, comments = comments)
@@ -215,7 +216,7 @@ def del_post(post_id):
 #TODO
 #FRONT END - when you are adding comment use /comment
 @app.route('/comment')
-def add_comment():
+def add_comment_route():
     user_info = session.args.get('user', None)
     post_id = request.args.get('post_id')
     comment = request.args.get('comment')
