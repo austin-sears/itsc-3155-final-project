@@ -91,9 +91,9 @@ def get_one_post(post_id):
         return None
 
 #uploads post to database
-def create_post(Name, Link, Description, CreatedBy, Code, tag):
+def create_post(Name, Link, Description, CreatedBy, Code, tag ):
     new_post_ref = db.collection('Post').document()
-    new_post_data = {'Name': Name, 'Link': Link, 'Description': Description, 'CreatedBy': CreatedBy, 'Code': Code, 'post_id' : new_post_ref.id, 'tag' : tag}
+    new_post_data = {'Name': Name, 'Link': Link, 'Description': Description, 'CreatedBy': CreatedBy, 'Code': Code, 'post_id' : new_post_ref.id, 'tag' : tag, 'comments': []}
     new_post_ref.set(new_post_data)
     new_post_id = new_post_ref.id
     return new_post_id
@@ -119,59 +119,41 @@ def delete_post(post_id):
 #COMMENT RELATED FUNCTIONS
 ##########################
 
-#
+#adds comment to the database
+#WHAT ARGUMENTS TO GIVE THE FUNCTION
+#post_id - the post that you will be adding comment to
+#username - the user that is currently logged in
+#comment - the text of the comment that is being added 
+def add_comment(post_id, username, comment):
+    try:
+        post_ref = db.collection('Post').document(post_id)
+        post_ref.update({
+            'comments': firestore.ArrayUnion([username + ": " + comment])
+        })
+        print('success')
+    except Exception as e:
+        print("Failed to add comment:", str(e))
+
+#gets all commments for a post
+#WHAT TO USE WHEN GETTING COMMENTS
+#formatted_comments[i].username for username
+#formatted_comments[i].text for text
 def get_comments(post_id):
-    comments = []
-    comment_ref = db.collection('Comments').where('post_id', '==', post_id)
-    docs = comment_ref.get()
-    for doc in docs:
-        comment_data = doc.to_dict()
-        comment_data['comment_id'] = doc.id
-        comments.append(comment_data)
-    return comments
+    post_doc = db.collection('Post').document(post_id).get()
 
-#
-def add_comment(post_id, commenter_username, comment_text):
-    new_comment_ref = db.collection('Comments').document()
-    new_comment_data = {'post_id': post_id,'commenter_username': commenter_username, 'comment_text': comment_text}
-    new_comment_ref.set(new_comment_ref.id)
-    return new_comment_id
+    if post_doc.exists:
+        comments = post_doc.to_dict()['comments']
 
-#
-def remove_comment(comment_id):
-    comment_ref = db.collection('Comments').document(comment_id)
-    if comment_ref.get().exists:
-        comment_ref.delete()
-        return True
+        formatted_comments = []
+        for comment in comments: 
+            #username = comment.split(" - ")[1]
+            #text = comment.split(" - ")[0]
+            #formatted_comments.append({
+            #    'username': username,
+            #    'text': text
+            #})
+            formatted_comments.append(comment)
+            print(formatted_comments)
+            return formatted_comments
     else:
-        return False
-
-
-
-
-#############################################################################################################################################################################################################################################
-#Task RELATED FUNCTIONS
-##########################
-
-#
-def add_tag(tag_id, tag_name):
-    tag_ref = db.collection('Tags').document(tag_id)
-    if not tag_ref.get().exists:
-        tag_data = {'tag_name': tag_name}
-        tag_ref.set(tag_data)
-        return True
-    else:
-        return False
-
-def remove_tag(tag_id):
-    tag_ref = db.collection('Tags').document(tag_id)
-    if  tag_ref.get().exists:
-        tag_ref.delete()
-        return True
-    else:
-        return False
-
-def get_tag(tag_id):
-    tag_ref = db.collection('Tags').document(tag_id)
-    tag_data = tag_ref.get().to_dict()
-    return tag_data if tag_data else None
+        return []

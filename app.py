@@ -159,6 +159,7 @@ def upload():
 
         new_post_id = create_post(Name = Name, Link = Link, Description = Description, CreatedBy = CreatedBy, Code = Code, tag = tag)
         if new_post_id:
+            add_comment(new_post_id, 'loop-official', 'Welcome to the LOOP Comment Section! Please be respectful and on topic.')
             return redirect('/feed')
         else:
             return abort(500, "Failed to Create Post")
@@ -194,8 +195,10 @@ def get_post(post_id):
            CreatedBy = True
        else:
            CreatedBy = False
-        #   comments = get_comments(post_id)
-       return render_template('Post_Page.html', post_id = post_id, post = single_post, username = user_info, CreatedBy = CreatedBy)
+       comments = get_comments(post_id)
+       print(comments)
+               
+       return render_template('Post_Page.html', post_id = post_id, post = single_post, username = user_info, CreatedBy = CreatedBy, comments = comments)
     return render_template('Post_Page.html')
 
 #deletes post, calling repository.py function
@@ -211,83 +214,18 @@ def del_post(post_id):
 #COMMENT RELATED FUNCTIONS
 ##########################
 
-#@app.route('/get_comment', methods=['GET'])
-#def get_comment():
-#    return jsonify({'message': 'Post_Page.html'})
+#adds comment 
+#TODO
+#FRONT END - when you are adding comment use /comment
+@app.route('/Post/<post_id>/comment', methods=['POST'])
+def add_comment_route(post_id):
+    user_info = session.get('user', None)
+    #post_id = request.args.get('post_id')
+    comment = request.form.get('comment')
+    username = user_info['Username']
+    print(post_id)
+    print(comment)
+    print(username)
 
-#@app.route('/add_comment', methods=['POST'])
-#def add_comment():
-#    return jsonify({'message': 'Post_Page.html' })
-
-@app.route('/get_comment', methods=['GET'])
-def get_comments_route():
-    post_id = request.args.get('post_id')
-    if not post_id:
-        return jsonify({'error': 'Missing required parameter: post_id'}), 400
-    comments = get_comments(post_id)
-    return jsonify({'comments': comments})
-
-@app.route('/add_comment', methods=['POST'])
-def add_comment_route():
-    data = request.json
-    post_id = data.get('post_id')
-    commenter_username = data.get('commenter_username')
-    comment_text = data.get('comment_text')
-
-@app.route('/remove_comment', methods = ["DELETE"])
-def remove_comment_route():
-    comment_id = request.args.get('comment_id')
-    if not comment_id:
-        return jsonify({'error': 'Missing required parameter: comment_id'}), 400
-    success = remove_comment(comment_id)
-
-    if success:
-        return jsonify({'message': 'Comment removed successfully'})
-    else:
-        return jsonify({'error': 'Comment not found or could not be removed'}), 404
-
-
-#############################################################################################################################################################################################################################################
-#TAG RELATED FUNCTIONS
-##########################
-
-@app.route('/add_tag', methods=['POST'])
-def add_tag_route():
-    data = request.json
-    tag_id = data.get('tag_id')
-    tag_name = data.get('tag_name')
-
-    if not tag_id or not tag_name:
-        return jsonify({'error': 'Missing required parameters'}), 400
-    success = add_tag(tag_id, tag_name)
-
-    if success:
-        return jsonify({'message': 'Tag added successfully'})
-    else:
-        return jsonify({'error': "Tag with given ID already exists"})
-
-@app.route('/remove_tag', methods=['DELETE'])
-def remove_tag_route():
-    tag_id = request.args.get('tag_id')
-
-    if not tag_id:
-        return jsonify({'error': 'Missing requred parameters:'})
-    success = remove_tag(tag_id)
-
-    if success:
-        return jsonify({'message': 'Tag removed successfully'})
-    else:
-        return jsonify({'error': 'Tag not found or could not be removed'})
-
-@app.route('/get_tag', methods=['GET'])
-def get_tag_route():
-    tag_id = request.args.get('tag_id')
-
-    if not tag_id:
-        return jsonify({'error': 'Missing requred parameters: tag_id'})
-    tag_data = get_tag(tag_id)
-
-    if tag_data:
-        return jsonify({'tag_data': tag_data})
-    else:
-        return jsonify({'error': 'Tag not found'}), 404
+    add_comment(post_id, username, comment)
+    return redirect(f'/Post/{post_id}')

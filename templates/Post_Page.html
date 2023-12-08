@@ -42,21 +42,29 @@
             <div class="comment">
               <p><strong>@Mark_Johnson:</strong> Can you provide more information?</p>
             </div>
+            <!-- CHANGES START HERE -->
+            {% for comment in post.comments %}  
+              <div class="comment">
+                <p>@{{ comment }}</p>
+              </div>
+            {% endfor %}
           </div>
-        </div>
-        <form action="/add_comment" method="post">
+        </div> 
+        
+        <form action="/Post/{{ post_id }}/comment" method="post">
           <h4>Leave a comment:</h4>
           <textarea name="comment" placeholder="Write your comment here" required></textarea>
           <br>
           <div style="display: flex;">
-            <a href="#" type="submit" class="btn btn-light" style="background-color: blueviolet; color: white; margin-top: 15px;">Comment</a>
+            <button type="submit" class="btn btn-light" style="background-color: blueviolet; color: white; margin-top: 15px;">Comment</button>
           </div>
-          {% if CreatedBy %}
-          <form action="">
-            <a href="/Post/delete/{{post.post_id}}" type = "Remove"class="btn btn-light" style="background-color: red; color: white; margin-top: 15px;">Remove Post</a> 
-          </form>
-          {% endif %}
         </form>
+        <!-- CHANGES END HERE -->
+        {% if CreatedBy %}
+          <form action="">
+            <a href="/Post/delete/{{post.post_id}}" type = "Remove" class="btn btn-light" style="background-color: red; color: white; margin-top: 15px;">Remove Post</a> 
+          </form>
+        {% endif %}
     </div>
 {% endblock %}
 
