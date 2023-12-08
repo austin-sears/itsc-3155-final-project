@@ -152,11 +152,12 @@ def upload():
         print(Link)
         print(Description)
         print(CreatedBy)
+        print(tag)
     
-        if not Name or not Link or not Description or not CreatedBy or not Code:
+        if not Name or not Link or not Description or not CreatedBy or not Code or not tag:
             abort(400, "Missing required information. Please fill out all fields.")
 
-        new_post_id = create_post(Name = Name, Link = Link, Description = Description, CreatedBy = CreatedBy, Code = Code)
+        new_post_id = create_post(Name = Name, Link = Link, Description = Description, CreatedBy = CreatedBy, Code = Code, tag = tag)
         if new_post_id:
             return redirect('/feed')
         else:
