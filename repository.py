@@ -128,8 +128,9 @@ def add_comment(post_id, username, comment):
     try:
         post_ref = db.collection('Post').document(post_id)
         post_ref.update({
-            'comments': firestore.ArrayUnion([comment + " - " + username])
+            'comments': firestore.ArrayUnion([username + ": " + comment])
         })
+        print('success')
     except Exception as e:
         print("Failed to add comment:", str(e))
 

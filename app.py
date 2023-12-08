@@ -216,12 +216,15 @@ def del_post(post_id):
 #adds comment 
 #TODO
 #FRONT END - when you are adding comment use /comment
-@app.route('/comment')
-def add_comment_route():
-    user_info = session.args.get('user', None)
-    post_id = request.args.get('post_id')
-    comment = request.args.get('comment')
-    username = user_info['username']
+@app.route('/Post/<post_id>/comment', methods=['POST'])
+def add_comment_route(post_id):
+    user_info = session.get('user', None)
+    #post_id = request.args.get('post_id')
+    comment = request.form.get('comment')
+    username = user_info['Username']
+    print(post_id)
+    print(comment)
+    print(username)
 
-    add_comment(username, post_id, comment)
+    add_comment(post_id, username, comment)
     return redirect(f'/Post/{post_id}')
