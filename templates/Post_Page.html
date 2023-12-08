@@ -32,17 +32,6 @@
 
         <div class="comment-section" style="text-align: left; padding: 10px;">
           <h3 style="text-align: Left;">Comments:</h3>
-          <div class="comment-container">
-            <div class="comment">
-              <p><strong>@John_Smith:</strong> This is a great article!</p>
-            </div>
-            <div class="comment">
-              <p><strong>@Jane_Doe:</strong> I have a different opinion.</p>
-            </div>
-            <div class="comment">
-              <p><strong>@Mark_Johnson:</strong> Can you provide more information?</p>
-            </div>
-            <!-- CHANGES START HERE -->
             {% for comment in post.comments %}  
               <div class="comment">
                 <p>@{{ comment }}</p>
@@ -59,7 +48,6 @@
             <button type="submit" class="btn btn-light" style="background-color: blueviolet; color: white; margin-top: 15px;">Comment</button>
           </div>
         </form>
-        <!-- CHANGES END HERE -->
         {% if CreatedBy %}
           <form action="">
             <a href="/Post/delete/{{post.post_id}}" type = "Remove" class="btn btn-light" style="background-color: red; color: white; margin-top: 15px;">Remove Post</a> 
