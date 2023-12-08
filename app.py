@@ -192,10 +192,11 @@ def get_post(post_id):
     if single_post:
        if single_post['CreatedBy'] == user_info['Username']:
            CreatedBy = True
-           comments = get_comments(post_id)
-               
        else:
            CreatedBy = False
+       comments = get_comments(post_id)
+       print(comments)
+               
        return render_template('Post_Page.html', post_id = post_id, post = single_post, username = user_info, CreatedBy = CreatedBy, comments = comments)
     return render_template('Post_Page.html')
 

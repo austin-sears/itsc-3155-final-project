@@ -145,12 +145,14 @@ def get_comments(post_id):
 
         formatted_comments = []
         for comment in comments: 
-            username = comment.split(" - ")[1]
-            text = comment.split(" - ")[0]
-            formatted_comments.append({
-                'username': username,
-                'text': text
-            })
+            #username = comment.split(" - ")[1]
+            #text = comment.split(" - ")[0]
+            #formatted_comments.append({
+            #    'username': username,
+            #    'text': text
+            #})
+            formatted_comments.append(comment)
+            print(formatted_comments)
             return formatted_comments
     else:
         return []
