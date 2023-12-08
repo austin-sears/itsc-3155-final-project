@@ -41,7 +41,7 @@ def logout_user(uid):
 #deletes the current user
 def delete_user(uid):
     auth.revoke_refresh_tokens(uid)
-    db.collection('Users').document(uid).delete(uid).delete()
+    db.collection('Users').document(uid).delete()
     auth.delete_user(uid)
     return None
 
@@ -91,9 +91,9 @@ def get_one_post(post_id):
         return None
 
 #uploads post to database
-def create_post(Name, Link, Description, CreatedBy, Code):
+def create_post(Name, Link, Description, CreatedBy, Code, tag):
     new_post_ref = db.collection('Post').document()
-    new_post_data = {'Name': Name, 'Link': Link, 'Description': Description, 'CreatedBy': CreatedBy, 'Code': Code, 'post_id' : new_post_ref.id}
+    new_post_data = {'Name': Name, 'Link': Link, 'Description': Description, 'CreatedBy': CreatedBy, 'Code': Code, 'post_id' : new_post_ref.id, 'tag' : tag}
     new_post_ref.set(new_post_data)
     new_post_id = new_post_ref.id
     return new_post_id

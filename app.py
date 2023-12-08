@@ -47,11 +47,14 @@ def login():
         user_dict = db.collection('Users').document(sessionToken_id).get().to_dict()
         print(user_dict)
         print('--------')
-        session['user'] = {
-            'st_id': sessionToken_id,
-            'Username': user_dict['Username'],
-            'user_dict': user_dict
-        }
+        if user_dict != None:
+            session['user'] = {
+                'st_id': sessionToken_id,
+                'Username': user_dict['Username'],
+                'user_dict': user_dict
+            }
+        else:
+            return redirect('/login')
         return redirect('/feed')
     return render_template('login.html')
 
@@ -86,6 +89,10 @@ def del_acct():
 @app.route('/profile')
 def home_acct():
     user_info = session.get('user', None)
+
+    if user_info is None:
+        return redirect(url_for('login'))
+    
     print(user_info)
     posts = get_user_posts(user_info['Username'])
 
@@ -111,8 +118,11 @@ def add_element_to_feed(element):
 #renders template for the feed page
 @app.route('/feed')
 def feed():
+    user_info = session.get('user', None)
+
+    if user_info is None:
+        return redirect(url_for('login'))
     try:
-        user_info = session.get('user', None)
         print(user_info)
         all_posts = get_all_posts()
         print(all_posts)
@@ -128,12 +138,16 @@ def feed():
 @app.route('/upload', methods = ['GET', 'POST'])
 def upload():
     print(request.method)
+    user_info = session.get('user', None)
+    if user_info is None:
+        return redirect(url_for('login'))
     if request.method == 'POST':
         Name = request.form.get("new_name")
         Link = request.form.get("new_link")
         Description = request.form.get("new_description")
-        CreatedBy = request.form.get("CreatedBy")
+        CreatedBy = user_info['Username']
         Code = request.form.get("new_code")
+        tag = request.form.get("new_tag")
         print(Name)
         print(Link)
         print(Description)
@@ -152,10 +166,13 @@ def upload():
 #second upload function
 @app.post('/upload')
 def new_post():
+    user_info = session.get('user', None)
+    if user_info is None:
+        return redirect(url_for('login'))
     Name = request.form.get("new_name")
     Link = request.form.get("new_link")
     Description = request.form.get("new_description")
-    CreatedBy = request.form.get("CreatedBy")
+    CreatedBy = user_info['Username']
     Code = request.form.get("new_code")
     print('Upload successful.')
     
