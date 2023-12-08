@@ -41,7 +41,7 @@ def logout_user(uid):
 #deletes the current user
 def delete_user(uid):
     auth.revoke_refresh_tokens(uid)
-    db.collection('Users').document(uid).delete(uid).delete()
+    db.collection('Users').document(uid).delete()
     auth.delete_user(uid)
     return None
 
@@ -91,9 +91,9 @@ def get_one_post(post_id):
         return None
 
 #uploads post to database
-def create_post(Name, Link, Description, CreatedBy, Code):
+def create_post(Name, Link, Description, CreatedBy, Code, tag):
     new_post_ref = db.collection('Post').document()
-    new_post_data = {'Name': Name, 'Link': Link, 'Description': Description, 'CreatedBy': CreatedBy, 'Code': Code, 'post_id' : new_post_ref.id}
+    new_post_data = {'Name': Name, 'Link': Link, 'Description': Description, 'CreatedBy': CreatedBy, 'Code': Code, 'post_id' : new_post_ref.id, 'tag' : tag}
     new_post_ref.set(new_post_data)
     new_post_id = new_post_ref.id
     return new_post_id
@@ -126,6 +126,7 @@ def get_comments(post_id):
     docs = comment_ref.get()
     for doc in docs:
         comment_data = doc.to_dict()
+        comment_data['comment_id'] = doc.id
         comments.append(comment_data)
     return comments
 
@@ -136,5 +137,41 @@ def add_comment(post_id, commenter_username, comment_text):
     new_comment_ref.set(new_comment_ref.id)
     return new_comment_id
 
+#
+def remove_comment(comment_id):
+    comment_ref = db.collection('Comments').document(comment_id)
+    if comment_ref.get().exists:
+        comment_ref.delete()
+        return True
+    else:
+        return False
+
+
+
 
 #############################################################################################################################################################################################################################################
+#Task RELATED FUNCTIONS
+##########################
+
+#
+def add_tag(tag_id, tag_name):
+    tag_ref = db.collection('Tags').document(tag_id)
+    if not tag_ref.get().exists:
+        tag_data = {'tag_name': tag_name}
+        tag_ref.set(tag_data)
+        return True
+    else:
+        return False
+
+def remove_tag(tag_id):
+    tag_ref = db.collection('Tags').document(tag_id)
+    if  tag_ref.get().exists:
+        tag_ref.delete()
+        return True
+    else:
+        return False
+
+def get_tag(tag_id):
+    tag_ref = db.collection('Tags').document(tag_id)
+    tag_data = tag_ref.get().to_dict()
+    return tag_data if tag_data else None

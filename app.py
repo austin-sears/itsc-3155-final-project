@@ -47,11 +47,14 @@ def login():
         user_dict = db.collection('Users').document(sessionToken_id).get().to_dict()
         print(user_dict)
         print('--------')
-        session['user'] = {
-            'st_id': sessionToken_id,
-            'Username': user_dict['Username'],
-            'user_dict': user_dict
-        }
+        if user_dict != None:
+            session['user'] = {
+                'st_id': sessionToken_id,
+                'Username': user_dict['Username'],
+                'user_dict': user_dict
+            }
+        else:
+            return redirect('/login')
         return redirect('/feed')
     return render_template('login.html')
 
@@ -86,6 +89,10 @@ def del_acct():
 @app.route('/profile')
 def home_acct():
     user_info = session.get('user', None)
+
+    if user_info is None:
+        return redirect(url_for('login'))
+    
     print(user_info)
     posts = get_user_posts(user_info['Username'])
 
@@ -111,8 +118,11 @@ def add_element_to_feed(element):
 #renders template for the feed page
 @app.route('/feed')
 def feed():
+    user_info = session.get('user', None)
+
+    if user_info is None:
+        return redirect(url_for('login'))
     try:
-        user_info = session.get('user', None)
         print(user_info)
         all_posts = get_all_posts()
         print(all_posts)
@@ -128,12 +138,16 @@ def feed():
 @app.route('/upload', methods = ['GET', 'POST'])
 def upload():
     print(request.method)
+    user_info = session.get('user', None)
+    if user_info is None:
+        return redirect(url_for('login'))
     if request.method == 'POST':
         Name = request.form.get("new_name")
         Link = request.form.get("new_link")
         Description = request.form.get("new_description")
-        CreatedBy = request.form.get("CreatedBy")
+        CreatedBy = user_info['Username']
         Code = request.form.get("new_code")
+        tag = request.form.get("new_tag")
         print(Name)
         print(Link)
         print(Description)
@@ -152,10 +166,13 @@ def upload():
 #second upload function
 @app.post('/upload')
 def new_post():
+    user_info = session.get('user', None)
+    if user_info is None:
+        return redirect(url_for('login'))
     Name = request.form.get("new_name")
     Link = request.form.get("new_link")
     Description = request.form.get("new_description")
-    CreatedBy = request.form.get("CreatedBy")
+    CreatedBy = user_info['Username']
     Code = request.form.get("new_code")
     print('Upload successful.')
     
@@ -193,13 +210,13 @@ def del_post(post_id):
 #COMMENT RELATED FUNCTIONS
 ##########################
 
-@app.route('/get_comment', methods=['GET'])
-def get_comment():
-    return jsonify({'message': 'Post_Page.html'})
+#@app.route('/get_comment', methods=['GET'])
+#def get_comment():
+#    return jsonify({'message': 'Post_Page.html'})
 
-@app.route('/add_comment', methods=['POST'])
-def add_comment():
-    return jsonify({'message': 'Post_Page.html' })
+#@app.route('/add_comment', methods=['POST'])
+#def add_comment():
+#    return jsonify({'message': 'Post_Page.html' })
 
 @app.route('/get_comment', methods=['GET'])
 def get_comments_route():
@@ -215,3 +232,61 @@ def add_comment_route():
     post_id = data.get('post_id')
     commenter_username = data.get('commenter_username')
     comment_text = data.get('comment_text')
+
+@app.route('/remove_comment', methods = ["DELETE"])
+def remove_comment_route():
+    comment_id = request.args.get('comment_id')
+    if not comment_id:
+        return jsonify({'error': 'Missing required parameter: comment_id'}), 400
+    success = remove_comment(comment_id)
+
+    if success:
+        return jsonify({'message': 'Comment removed successfully'})
+    else:
+        return jsonify({'error': 'Comment not found or could not be removed'}), 404
+
+
+#############################################################################################################################################################################################################################################
+#TAG RELATED FUNCTIONS
+##########################
+
+@app.route('/add_tag', methods=['POST'])
+def add_tag_route():
+    data = request.json
+    tag_id = data.get('tag_id')
+    tag_name = data.get('tag_name')
+
+    if not tag_id or not tag_name:
+        return jsonify({'error': 'Missing required parameters'}), 400
+    success = add_tag(tag_id, tag_name)
+
+    if success:
+        return jsonify({'message': 'Tag added successfully'})
+    else:
+        return jsonify({'error': "Tag with given ID already exists"})
+
+@app.route('/remove_tag', methods=['DELETE'])
+def remove_tag_route():
+    tag_id = request.args.get('tag_id')
+
+    if not tag_id:
+        return jsonify({'error': 'Missing requred parameters:'})
+    success = remove_tag(tag_id)
+
+    if success:
+        return jsonify({'message': 'Tag removed successfully'})
+    else:
+        return jsonify({'error': 'Tag not found or could not be removed'})
+
+@app.route('/get_tag', methods=['GET'])
+def get_tag_route():
+    tag_id = request.args.get('tag_id')
+
+    if not tag_id:
+        return jsonify({'error': 'Missing requred parameters: tag_id'})
+    tag_data = get_tag(tag_id)
+
+    if tag_data:
+        return jsonify({'tag_data': tag_data})
+    else:
+        return jsonify({'error': 'Tag not found'}), 404
