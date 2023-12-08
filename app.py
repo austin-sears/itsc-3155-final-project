@@ -91,7 +91,7 @@ def home_acct():
     user_info = session.get('user', None)
 
     if user_info is None:
-        return redirect(url_for('static', filename='login.html'))
+        return redirect(url_for('login'))
     
     print(user_info)
     posts = get_user_posts(user_info['Username'])
@@ -121,7 +121,7 @@ def feed():
     user_info = session.get('user', None)
 
     if user_info is None:
-        return redireect(url_for('static', filename='Feed_page.html'))
+        return redirect(url_for('login'))
     try:
         print(user_info)
         all_posts = get_all_posts()
@@ -138,11 +138,14 @@ def feed():
 @app.route('/upload', methods = ['GET', 'POST'])
 def upload():
     print(request.method)
+    user_info = session.get('user', None)
+    if user_info is None:
+        return redirect(url_for('login'))
     if request.method == 'POST':
         Name = request.form.get("new_name")
         Link = request.form.get("new_link")
         Description = request.form.get("new_description")
-        CreatedBy = request.form.get("CreatedBy")
+        CreatedBy = user_info['Username']
         Code = request.form.get("new_code")
         tag = request.form.get("new_tag")
         print(Name)
@@ -163,10 +166,13 @@ def upload():
 #second upload function
 @app.post('/upload')
 def new_post():
+    user_info = session.get('user', None)
+    if user_info is None:
+        return redirect(url_for('login'))
     Name = request.form.get("new_name")
     Link = request.form.get("new_link")
     Description = request.form.get("new_description")
-    CreatedBy = request.form.get("CreatedBy")
+    CreatedBy = user_info['Username']
     Code = request.form.get("new_code")
     print('Upload successful.')
     
