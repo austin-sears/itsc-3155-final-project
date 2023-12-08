@@ -15,7 +15,7 @@
   </div>
 
   <ul class="list-group list-group-flush">
-    <li class="list-group-item"><b>Username:</b> {{ account.Username }}'s Page</li>
+    <li class="list-group-item"><b>Username:</b> @{{ account.Username }}</li>
     <li class="list-group-item"><b>Email:</b> {{ account.Email }}</li>
     <li class="list-group-item"><b>About Me:</b> {{ account.AboutMe }}</li>
   </ul>
@@ -52,7 +52,7 @@
   {% endfor %}
 
   <form action = "/logout" >
-    <button type = "submit" class = "btn btn-danger">Logout</button>
+    <button type = "submit" class = "btn btn-danger" style = "padding: 10px; margin-left: 20px;">Logout</button>
   </form>
 
   <form action = "/delete_acct">
