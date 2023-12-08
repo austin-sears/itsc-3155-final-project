@@ -51,13 +51,14 @@
 
   {% endfor %}
 
-  <form action = "/logout" >
-    <button type = "submit" class = "btn btn-danger" style = "padding: 10px; margin-left: 20px;">Logout</button>
-  </form>
-
-  <form action = "/delete_acct">
-    <button type = "submit" class = "btn btn-danger">Delete Account</button>
-  </form>
+    <div class="button-container" style="display: flex;">
+      <form action = "/logout" >
+        <button type = "submit" class = "btn btn-danger" style = "margin-top: 10px; margin-left: 20px;">Logout</button>
+      </form>
+      <form action = "/delete_acct">
+        <button type = "submit" class = "btn btn-danger" style = "margin-top: 10px; margin-left: 10px;">Delete Account</button>
+      </form>
+    </div>
 
 {% endblock %}
 
