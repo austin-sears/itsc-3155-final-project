@@ -47,11 +47,14 @@ def login():
         user_dict = db.collection('Users').document(sessionToken_id).get().to_dict()
         print(user_dict)
         print('--------')
-        session['user'] = {
-            'st_id': sessionToken_id,
-            'Username': user_dict['Username'],
-            'user_dict': user_dict
-        }
+        if user_dict != None:
+            session['user'] = {
+                'st_id': sessionToken_id,
+                'Username': user_dict['Username'],
+                'user_dict': user_dict
+            }
+        else:
+            return redirect('/login')
         return redirect('/feed')
     return render_template('login.html')
 
