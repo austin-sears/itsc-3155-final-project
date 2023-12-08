@@ -15,7 +15,7 @@
       </code>
     </pre>
   </div>
-    <div style="padding: 10px; margin-left: 20px;">
+    <div style="margin-left: 20px;">
       <h5>
         From:
       </h5>
@@ -30,10 +30,10 @@
           {{post.Description}}
         </p>
 
-        <div class="comment-section" style="text-align: left; padding: 10px;">
-          <h3 style="text-align: Left;">Comments:</h3>
+        <div class="comment-section" style="text-align: left">
+          <h5 style="text-align: Left;">Comments:</h5>
             {% for comment in post.comments %}  
-              <div class="comment">
+              <div class="comment" style="padding: 10px">
                 <p>@{{ comment }}</p>
               </div>
             {% endfor %}
@@ -41,16 +41,16 @@
         </div> 
         
         <form action="/Post/{{ post_id }}/comment" method="post">
-          <h4>Leave a comment:</h4>
-          <textarea name="comment" placeholder="Write your comment here" required></textarea>
+          <h5 style="margin-left:20px">Leave a comment:</h5>
+          <textarea name="comment" placeholder="Write your comment here" required style="margin-left:20px"></textarea>
           <br>
           <div style="display: flex;">
-            <button type="submit" class="btn btn-light" style="background-color: blueviolet; color: white; margin-top: 15px;">Comment</button>
+            <button type="submit" class="btn btn-light" style="background-color: blueviolet; color: white; margin-top: 15px; margin-left:20px">Comment</button>
           </div>
         </form>
         {% if CreatedBy %}
           <form action="">
-            <a href="/Post/delete/{{post.post_id}}" type = "Remove" class="btn btn-light" style="background-color: red; color: white; margin-top: 15px;">Remove Post</a> 
+            <a href="/Post/delete/{{post.post_id}}" type = "Remove" class="btn btn-light" style="background-color: red; color: white; margin-top: 15px; margin-left:20px">Remove Post</a> 
           </form>
         {% endif %}
     </div>
