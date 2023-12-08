@@ -159,6 +159,7 @@ def upload():
 
         new_post_id = create_post(Name = Name, Link = Link, Description = Description, CreatedBy = CreatedBy, Code = Code, tag = tag)
         if new_post_id:
+            add_comment(new_post_id, 'loop-official', 'Welcome to the LOOP Comment Section! Please be respectful and on topic.')
             return redirect('/feed')
         else:
             return abort(500, "Failed to Create Post")
