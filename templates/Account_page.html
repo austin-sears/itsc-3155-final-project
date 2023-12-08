@@ -28,7 +28,7 @@
   <template class="card">
     <div class="card-body">
         
-      <h5 class="card-title">{{post.Name}} <span class="badge bg-secondary">HTML</span> <span class="badge bg-secondary" style="background-color: blueviolet;">CSS</span></h5>
+      <h5 class="card-title">{{post.Code}} <span class="badge bg-secondary">{{post.tag}}</span> <span class="badge bg-secondary" style="background-color: blueviolet;"></span></h5>
       <userName style="font-family: 'Courier New', Courier, monospace;">
         @{{account.Username}}
       </userName>
@@ -40,7 +40,7 @@
   <div class="card">
     <div class="card-body">
         
-      <h5 class="card-title">{{post.Name}}<span class="badge bg-secondary">HTML</span> <span class="badge bg-secondary" style="background-color: blueviolet;">CSS</span></h5>
+      <h5 class="card-title">{{post.Code}}<span class="badge bg-secondary">{{post.tag}}</span> <span class="badge bg-secondary" style="background-color: blueviolet;"></span></h5>
       <userName style="font-family: 'Courier New', Courier, monospace;">
         @{{account.Username}}
       </userName>
@@ -53,6 +53,10 @@
 
   <form action = "/logout" >
     <button type = "submit" class = "btn btn-danger">Logout</button>
+  </form>
+
+  <form action = "/delete_acct">
+    <button type = "submit" class = "btn btn-danger">Delete Account</button>
   </form>
 
 {% endblock %}

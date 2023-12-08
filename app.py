@@ -134,6 +134,7 @@ def upload():
         Description = request.form.get("new_description")
         CreatedBy = request.form.get("CreatedBy")
         Code = request.form.get("new_code")
+        tag = request.form.get("new_tag")
         print(Name)
         print(Link)
         print(Description)
