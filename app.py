@@ -86,6 +86,10 @@ def del_acct():
 @app.route('/profile')
 def home_acct():
     user_info = session.get('user', None)
+
+    if user_info is None:
+        return redirect(url_for('static', filename='login.html'))
+    
     print(user_info)
     posts = get_user_posts(user_info['Username'])
 
@@ -111,8 +115,11 @@ def add_element_to_feed(element):
 #renders template for the feed page
 @app.route('/feed')
 def feed():
+    user_info = session.get('user', None)
+
+    if user_info is None:
+        return redireect(url_for('static', filename='Feed_page.html'))
     try:
-        user_info = session.get('user', None)
         print(user_info)
         all_posts = get_all_posts()
         print(all_posts)
